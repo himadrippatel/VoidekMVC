@@ -1,0 +1,61 @@
+﻿
+@{
+    ViewBag.Title = "KendoGridDemo";
+}
+
+<h2>KendoAlliantGridDemo</h2>
+
+<div id="grid"></div>
+
+<script>
+    $(document).ready(function () {
+        $("#grid").kendoAlliantGrid({
+            dataSource: {
+                type: "odata",
+                transport: {
+                    read: "https://demos.telerik.com/kendo-ui/service/Northwind.svc/Customers"
+                },
+                pageSize: 20
+            },
+            height: 550,
+            groupable: true,
+            scrollable: true,
+            filterable: {
+                mode: "row",
+            },
+            pageable: true,
+            columns: [{
+                template: "<div class='customer-photo'" +
+                    "style='background-image: url(../content/web/Customers/#:data.CustomerID#.jpg);'></div>" +
+                    "<div class='customer-name'>#: ContactName #</div>",
+                field: "ContactName",
+                title: "Contact Name",
+                width: 240
+            }, {
+                field: "ContactTitle",
+                title: "Contact Title"
+            }, {
+                field: "CompanyName",
+                title: "Company Name"
+            }, {
+                field: "Country",
+                width: 150
+            }]
+        });
+        var grid = $("#grid").data("kendoAlliantGrid");
+    });
+
+        function titleFilter(args) {
+            args.element.kendoAutoComplete({
+                dataSource: titles
+            });
+        }
+
+        function cityFilter(args) {
+            args.element.kendoDropDownList({
+                dataSource: cities,
+                optionLabel: "--Select Value--"
+            });
+        }
+
+</script>

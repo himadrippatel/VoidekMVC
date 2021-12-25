@@ -1,0 +1,10 @@
+﻿@{
+    if (IsAjax)
+    {
+        Layout = "~/Areas/UserManagement/Views/Shared/_LayoutNull.cshtml";
+    }
+    else
+    {
+        Layout = "~/Areas/UserManagement/Views/Shared/_LayoutAdmin.cshtml";
+    }
+}

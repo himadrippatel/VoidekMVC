@@ -1,0 +1,69 @@
+﻿@using Alliant.Domain
+@model Alliant.ViewModel.TemplateViewModel
+@{
+    Layout = null;
+}
+<div id="jsSearchTemplate" class="jsSearchTemplate">
+    @{
+        switch (Model.SearchTemplate)
+        {
+            case EnumSearchTemplate.UM_ChildMenu:
+                @Html.AlliantPartial(Model._PartialViewTemplate, Model.MenuTemplates)
+                break;
+            case EnumSearchTemplate.UM_Role:
+                @Html.AlliantPartial(Model._PartialViewTemplate, Model.RoleTemplates)
+                break;
+            case EnumSearchTemplate.tblCustomers:
+                @Html.AlliantPartial(Model._PartialViewTemplate, Model.CustomerTemplates)
+                break;
+            case EnumSearchTemplate.tblInvoice:
+                @Html.AlliantPartial(Model._PartialViewTemplate, Model.InvoiceTemplates)
+                break;
+            case EnumSearchTemplate.tblPayment:
+                @Html.AlliantPartial(Model._PartialViewTemplate, Model.PaymentTemplates)
+                break;
+            case EnumSearchTemplate.tblquote:
+                @Html.AlliantPartial(Model._PartialViewTemplate, Model.QUOTETemplates)
+                break;
+            case EnumSearchTemplate.tblRental:
+                @Html.AlliantPartial(Model._PartialViewTemplate, Model.RentalTemplates)
+                break;
+            case EnumSearchTemplate.tblpurchase:
+                @Html.AlliantPartial(Model._PartialViewTemplate, Model.POTemplates)
+                break;
+            case EnumSearchTemplate.tblpurchase_1:
+                @Html.AlliantPartial(Model._PartialViewTemplate, Model.VENDORSOFFEREDTemplates)
+                break;
+            case EnumSearchTemplate.tblquote_1:
+                @Html.AlliantPartial(Model._PartialViewTemplate, Model.VenueTemplates)
+                break;
+            case EnumSearchTemplate.tblquote_2:
+                @Html.AlliantPartial(Model._PartialViewTemplate, Model.CLIENTPOIdTemplates)
+                break;
+            case EnumSearchTemplate.tblEquipStatus:
+                @Html.AlliantPartial(Model._PartialViewTemplate, Model.SERIALNOTemplates)
+                break;
+            case EnumSearchTemplate.tblContactPhone:
+                @Html.AlliantPartial(Model._PartialViewTemplate, Model.PhoneNOTemplates)
+                break;
+            case EnumSearchTemplate.tblCustAddress:
+                @Html.AlliantPartial(Model._PartialViewTemplate, Model.WEBADDRESSTemplates)
+                break;
+            case EnumSearchTemplate.tblCustomers_email:
+                @Html.AlliantPartial(Model._PartialViewTemplate, Model.EmailTemplates)
+                break;
+            case EnumSearchTemplate.tblContact:
+                @Html.AlliantPartial(Model._PartialViewTemplate, Model.FIRST_LASTNAMETempates)
+                break;
+            case EnumSearchTemplate.tblcreditmemo:
+                @Html.AlliantPartial(Model._PartialViewTemplate, Model.CREDITMEMOTemplates)
+                break;
+            case EnumSearchTemplate.tblcat:
+                @Html.AlliantPartial(Model._PartialViewTemplate, Model.CDESCRIPTIONTemplates)
+                break;
+            default:
+                @Html.Partial("_NotFound")
+                break;
+        }
+    }
+</div>

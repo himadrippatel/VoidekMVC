@@ -1,0 +1,3 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="alliant_mvc" Class="DataClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=192.168.0.109;Initial Catalog=alliant_mvc;Persist Security Info=True;User ID=sa" SettingsObjectName="Alliant.DalLayer.Properties.Settings" SettingsPropertyName="alliant_mvcConnectionString" Provider="System.Data.SqlClient" />
+</Database>

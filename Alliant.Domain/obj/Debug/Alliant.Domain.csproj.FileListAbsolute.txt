@@ -1,0 +1,11 @@
+D:\Arpit\Alliant_internal\Alliant.Domain\bin\Debug\Alliant.Domain.dll
+D:\Arpit\Alliant_internal\Alliant.Domain\bin\Debug\Alliant.Domain.pdb
+D:\Arpit\Alliant_internal\Alliant.Domain\obj\Debug\Alliant.Domain.csproj.CoreCompileInputs.cache
+D:\Arpit\Alliant_internal\Alliant.Domain\obj\Debug\Alliant.Domain.dll
+D:\Arpit\Alliant_internal\Alliant.Domain\obj\Debug\Alliant.Domain.pdb
+D:\Arpit\Alliant_internal\Alliant.Domain\obj\Debug\Alliant.Domain.csprojAssemblyReference.cache
+D:\Projects\Alliant_internal_Test\Alliant_internal_Test\Alliant_internal\Alliant.Domain\bin\Debug\Alliant.Domain.dll
+D:\Projects\Alliant_internal_Test\Alliant_internal_Test\Alliant_internal\Alliant.Domain\bin\Debug\Alliant.Domain.pdb
+D:\Projects\Alliant_internal_Test\Alliant_internal_Test\Alliant_internal\Alliant.Domain\obj\Debug\Alliant.Domain.csproj.CoreCompileInputs.cache
+D:\Projects\Alliant_internal_Test\Alliant_internal_Test\Alliant_internal\Alliant.Domain\obj\Debug\Alliant.Domain.dll
+D:\Projects\Alliant_internal_Test\Alliant_internal_Test\Alliant_internal\Alliant.Domain\obj\Debug\Alliant.Domain.pdb

@@ -1,0 +1,221 @@
+﻿
+@{
+    ViewBag.Title = "DropZoneFileUpload";
+}
+@*<!doctype html>
+    <html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+        <script src="~/Scripts/js/extensions/dropzone.min.js"></script>
+        <style>
+
+            html, body {
+                height: 100%;
+            }
+
+            #actions {
+                margin: 2em 0;
+            }
+
+
+            /* Mimic table appearance */
+            div.table {
+                display: table;
+            }
+
+                div.table .file-row {
+                    display: table-row;
+                }
+
+                    div.table .file-row > div {
+                        display: table-cell;
+                        vertical-align: top;
+                        border-top: 1px solid #ddd;
+                        padding: 8px;
+                    }
+
+                    div.table .file-row:nth-child(odd) {
+                        background: #f9f9f9;
+                    }
+
+
+
+            /* The total progress gets shown by event listeners */
+            #total-progress {
+                opacity: 0;
+                transition: opacity 0.3s linear;
+            }
+
+            /* Hide the progress bar when finished */
+            #previews .file-row.dz-success .progress {
+                opacity: 0;
+                transition: opacity 0.3s linear;
+            }
+
+            /* Hide the delete button initially */
+            #previews .file-row .delete {
+                display: none;
+            }
+
+            /* Hide the start and cancel buttons and show the delete button */
+
+            #previews .file-row.dz-success .start,
+            #previews .file-row.dz-success .cancel {
+                display: none;
+            }
+
+            #previews .file-row.dz-success .delete {
+                display: block;
+            }
+        </style>
+    </head>
+    <body>
+
+
+        <h2>DropZoneFileUpload</h2>
+
+        <div class="table table-striped files" id="previews">
+
+            <div id="template" class="file-row">
+                <!-- This is used as the file preview template -->
+                <div>
+                    <span class="preview"><img data-dz-thumbnail /></span>
+                </div>
+                <div>
+                    <p class="name" data-dz-name></p>
+                    <strong class="error text-danger" data-dz-errormessage></strong>
+                </div>
+                <div>
+                    <p class="size" data-dz-size></p>
+                    <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                        <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
+                    </div>
+                </div>
+                <div>
+                    <button class="btn btn-primary start">
+                        <i class="glyphicon glyphicon-upload"></i>
+                        <span>Start</span>
+                    </button>
+                    <button data-dz-remove class="btn btn-warning cancel">
+                        <i class="glyphicon glyphicon-ban-circle"></i>
+                        <span>Cancel</span>
+                    </button>
+                    <button data-dz-remove class="btn btn-danger delete">
+                        <i class="glyphicon glyphicon-trash"></i>
+                        <span>Delete</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <script>
+            var previewNode = document.querySelector("#template");
+            previewNode.id = "";
+            var previewTemplate = previewNode.parentNode.innerHTML;
+            previewNode.parentNode.removeChild(previewNode);
+
+            var myDropzone = new Dropzone(document.body, { // Make the whole body a dropzone
+                url: "/target-url", // Set the url
+                thumbnailWidth: 80,
+                thumbnailHeight: 80,
+                parallelUploads: 20,
+                previewTemplate: previewTemplate,
+                autoQueue: false, // Make sure the files aren't queued until manually added
+                previewsContainer: "#previews", // Define the container to display the previews
+                clickable: ".fileinput-button" // Define the element that should be used as click trigger to select files.
+            });
+
+            myDropzone.on("addedfile", function (file) {
+                // Hookup the start button
+                file.previewElement.querySelector(".start").onclick = function () { myDropzone.enqueueFile(file); };
+            });
+
+            // Update the total progress bar
+            myDropzone.on("totaluploadprogress", function (progress) {
+                document.querySelector("#total-progress .progress-bar").style.width = progress + "%";
+            });
+
+            myDropzone.on("sending", function (file) {
+                // Show the total progress bar when upload starts
+                document.querySelector("#total-progress").style.opacity = "1";
+                // And disable the start button
+                file.previewElement.querySelector(".start").setAttribute("disabled", "disabled");
+            });
+
+            // Hide the total progress bar when nothing's uploading anymore
+            myDropzone.on("queuecomplete", function (progress) {
+                document.querySelector("#total-progress").style.opacity = "0";
+            });
+
+            // Setup the buttons for all transfers
+            // The "add files" button doesn't need to be setup because the config
+            // `clickable` has already been specified.
+            document.querySelector("#actions .start").onclick = function () {
+                myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED));
+            };
+            document.querySelector("#actions .cancel").onclick = function () {
+                myDropzone.removeAllFiles(true);
+            };
+        </script>
+
+    </body>
+    </html>*@
+
+@*<!doctype html>
+<meta charset="utf-8">
+<title>Dropzone simple example</title>
+
+<!--
+  DO NOT SIMPLY COPY THOSE LINES. Download the JS and CSS files from the
+  latest release (https://github.com/enyo/dropzone/releases/latest), and
+  host them yourself!
+-->
+<script src="https://rawgit.com/enyo/dropzone/master/dist/dropzone.js"></script>
+<link rel="stylesheet" href="https://rawgit.com/enyo/dropzone/master/dist/dropzone.css">
+
+<p>
+    This is the most minimal example of Dropzone. The upload in this example
+    doesn't work, because there is no actual server to handle the file upload.
+</p>
+<!-- Change /upload-target to your upload address -->
+<form action="/upload-target" class="dropzone" id="file"></form>*@
+
+<div class="content-body">
+    <section class="horizontal-grid" id="horizontal-grid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Partial File Upload Demo</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                @Html.Action("FileUpload", "_Base",
+                                    new
+                                    {
+                                        area = "",
+                                        oDropDownDataModel = new AlliantFileUploadModel()
+                                        {
+
+                                                ControlID = "logoUrl",
+
+                                        }
+                                    })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+
+
+

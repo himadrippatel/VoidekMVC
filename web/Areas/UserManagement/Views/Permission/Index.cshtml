@@ -1,0 +1,79 @@
+﻿@model UIContainer<Alliant.Domain.Permission>
+@{
+    ViewBag.Title = "Permission";
+    bool IsEdit = Model.dtUserActivities["activity_usermanagement_permission_update"];
+    bool IsDelete = Model.dtUserActivities["activity_usermanagement_permission_delete"];    
+}
+<div class="content-body">
+    <section class="horizontal-grid" id="horizontal-grid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">
+                            Search Permissions
+                            @if (Model.dtUserActivities["activity_usermanagement_permission_insert"])
+                            {
+                                <a href="@Url.Action("Create","Permission",new { @area=Html.AreaUserManagement()})" onclick="return ajaxAnchorClick(this, function () { $('.jsPermissionCollapse').trigger('click'); })" data-ajaxdivid="PermissionForm">
+                                    <i class="la la-plus"></i> Create Permission
+                                </a>
+                            }
+                        </h4>
+                        <a class="heading-elements-toggle"><i class="ft-align-justify font-medium-3"></i></a>
+                        <div class="heading-elements">
+                            <ul class="list-inline mb-0">
+                                <li><a data-action="collapse" class="jsPermissionCollapse"><i class="ft-minus"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        @using (Html.BeginForm())
+                        {
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="table-responsive">
+                                        @(Html.Kendo().Grid<Alliant.Domain.Permission>()
+                                                                .Name("PermissionGrid")
+                                                                .NoRecords("No record found.")
+                                                                .Columns(columns =>
+                                                                {
+                                                                    columns.Template(@<text></text>).Visible((IsDelete || IsEdit))
+                                .HeaderTemplate("Action")
+                                .ClientTemplate((IsEdit ? "<a href='" + Url.Action("Edit", "Permission", new { area = Html.AreaUserManagement() }) + "/#=PermissionID#' onclick='return ajaxAnchorClick(this)' data-ajaxdivid='PermissionForm'><i class='la la-edit'></i></a>" : "")+(IsDelete ? " &nbsp;<a href='" + Url.Action("DeletePost", "Permission", new { area = Html.AreaUserManagement() }) + "/#=PermissionID#' onclick='return ajaxSweetAlert(this)'><i class='la la-remove'></i></a>" : ""));
+                                                    columns.Bound(c => c.Name);
+                                                    columns.Bound(c => c.IsActive);
+                                                    columns.Bound(c => c.CreatedOn).Format("{0:dd-MM-yyyy hh:mm:ss}");
+                                                    columns.Bound(c => c.UpdatedOn).Format("{0:dd-MM-yyyy hh:mm:ss}");
+                                                })
+ .Pageable(p =>
+                                   {
+                                       p.PreviousNext(false);
+                                       p.Numeric(false);
+                                   })
+.Filterable()
+.Scrollable(sc => sc.Endless(true))
+.Scrollable(s => s.Height(550))
+.Sortable()
+.DataSource
+(dataSource => dataSource
+.Ajax()
+.PageSize(Constant.KendoDefaultPageSize)
+.Read(read => read.Action("GetPermissionBySearch", "Permission", new { area = Html.AreaUserManagement() }))
+.ServerOperation(true)
+.Model(Permission => Permission.Id(x => x.PermissionID))
+)
+                                        )
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="PermissionForm" class="PermissionForm">
+
+        </div>       
+    </section>
+</div>
+

@@ -1,0 +1,46 @@
+﻿@{
+    ViewBag.Title = "Alliant FileUpload";
+}
+
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <div class="col-md-4 form-group">
+            <label>Name</label>
+            @Html.TextBox("Name", null, new { @class = "form-control" })
+        </div>
+        <div class="col-md-4">
+            <label>Age</label>
+            @Html.TextBox("Age", null, new { @class = "form-control" })
+        </div>
+        <div class="col-md-4">
+            <label>@Html.CheckBox("IsActive", true) IsActive</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 form-group">
+
+            @Html.AlliantFileUploder(new AlliantFileUploadModel() {
+           IsMultipleFile=false,
+           ButtonText="Employee",
+           Files=new List<FilesDataUploadResult>() {
+               new FilesDataUploadResult(){
+                   name ="797727ce-fd18-4348-b270-6ef87c4c46e6_processed.jpeg",
+                   originalFileName="797727ce-fd18-4348-b270-6ef87c4c46e6_processed.jpeg",
+                   filePath=$"{FolderPathConstant.UploadTestingImg}797727ce-fd18-4348-b270-6ef87c4c46e6_processed.jpeg"
+                   
+               }
+           }
+
+       })
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <button type="button"
+                    onclick="@Html.AjaxCall("this",Url.Action("FilePost","Testing"),"POST")">
+                Save
+            </button>
+        </div>
+    </div>
+}

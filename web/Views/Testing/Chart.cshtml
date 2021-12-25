@@ -1,0 +1,144 @@
+﻿@model Alliant.Controllers.ChartModel
+@{
+    ViewBag.Title = "Chart Page";
+}
+
+<div class="content-body">
+    <div class="row">
+        <div class="col-md-12">
+            Welcome to Alliant
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Line Stacked Area Chart</h4>
+                    <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
+                    <div class="heading-elements">
+                        <ul class="list-inline mb-0">
+                            <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                            <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
+                            <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+                            <li><a data-action="close"><i class="ft-x"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-content collapse show">
+                    <div class="card-body chartjs">
+                        <canvas id="line-stacked-area" height="500"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+</div>
+
+@section JSSection{
+    @Scripts.Render("~/Scripts/js/charts/chart.min.js")
+    <script>
+        //Get the context of the Chart canvas element we want to select
+        // var ctx = document.getElementById("line-stacked-area").getContext("2d");
+        var ctx = $('#line-stacked-area');
+
+        // Chart Options
+        var chartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            legend: {
+                position: 'bottom',
+            },
+            hover: {
+                mode: 'label'
+            },
+            scales: {
+                xAxes: [{
+                    display: true,
+                    gridLines: {
+                        color: "#f3f3f3",
+                        drawTicks: false,
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Month'
+                    }
+                }],
+                yAxes: [{
+                    display: true,
+                    gridLines: {
+                        color: "#f3f3f3",
+                        drawTicks: false,
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Value'
+                    }
+                }]
+            },
+            title: {
+                display: true,
+                text: 'Chart.js Line Chart - Legend'
+            }
+        };
+
+        //// Chart Data
+        //var chartData = {
+        //    labels: ["January", "February", "March", "April", "May", "June", "July"],
+        //    datasets: [{
+        //        label: "Branch-1",
+        //        data: [65, 59, 80, 81, 56, 55, 40],
+        //        backgroundColor: "rgba(22,211,154,.5)",
+        //        borderColor: "transparent",
+        //        pointBorderColor: "#28D094",
+        //        pointBackgroundColor: "#FFF",
+        //        pointBorderWidth: 2,
+        //        pointHoverBorderWidth: 2,
+        //        pointRadius: 4,
+        //        },
+        //        {
+        //        label: "Branch-2",
+        //        data: [28, 48, 40, 19, 86, 27, 90],
+        //        backgroundColor: "rgba(81,117,224,.5)",
+        //        borderColor: "transparent",
+        //        pointBorderColor: "#5175E0",
+        //        pointBackgroundColor: "#FFF",
+        //        pointBorderWidth: 2,
+        //        pointHoverBorderWidth: 2,
+        //        pointRadius: 4,
+        //        },
+        //        {
+        //        label: "Branch-3",
+        //        data: [80, 25, 16, 36, 67, 18, 76],
+        //        backgroundColor: "rgba(249,142,118,.5)",
+        //        borderColor: "transparent",
+        //        pointBorderColor: "#F98E76",
+        //        pointBackgroundColor: "#FFF",
+        //        pointBorderWidth: 2,
+        //        pointHoverBorderWidth: 2,
+        //        pointRadius: 4,
+        //    }]
+        //};
+
+        var chartData = JSON.parse('@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model))');
+        console.log(chartData);
+
+        @*var chartData = [];
+        AlliantAjaxCall("GET", "@Url.Action("ChartData","Testing")", {}, function (data) {
+            chartData = data;
+        });
+        console.log(chartData)*@
+
+        var config = {
+            type: 'line',
+
+            // Chart Options
+            options: chartOptions,
+
+            // Chart Data
+            data: chartData
+        };
+
+        // Create the chart
+        var stackedAreaChart = new Chart(ctx, config);
+    </script>
+}

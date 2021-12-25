@@ -1,0 +1,348 @@
+.input-validation-error {
+    color: #dc3545 !important;
+    border-color: #dc3545 !important;
+}
+.jsLoaderSearchTemplate
+{
+    padding-left: 18%;
+    padding-top: 1%;
+    display: none;
+}
+
+.select2-result-repository__meta {
+float:none !important;
+}
+.bs-callout-pink {
+    display: block;
+    border-color: #e91e63 !important;
+    background-color: #f8b3ca;
+    border-radius: 0.25rem;
+    color: #070103;
+}
+
+.UlAuto 
+{  
+    max-height: 20em !important;
+    overflow: auto;
+}
+
+.Hegiht300 {
+    max-height:300px;
+    overflow:auto;
+}
+.setMessage {
+    position: fixed;
+    bottom: 0px;
+    height: 30px;
+    border-width: 1px;
+    border-style: solid;
+    width: 50%;
+    left: 30%;
+    text-align: center;
+    background: white;
+    color: Green;
+    z-index: 9991;
+}
+
+.removeMessage {
+    display: none;
+}
+
+.hide {
+display:none;
+}
+.show {
+display:block;
+}
+
+/**Kendo
+ Grid Customized
+*/
+#grid table {
+    min-width: 1190px;
+}
+
+/*All marigin class*/
+.mr-top-1 {
+    margin-top:1em;
+}
+
+#jsloading {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    position: fixed;
+    display: none;
+    opacity: 0.7;
+    background-color: #fff;
+    z-index: 99;
+    text-align: center;
+}
+
+#loading-image {
+    position: absolute;
+    top: 50%;
+    height: 50px;
+}
+
+.alliantKendo .k-grid-content {
+    min-height: 100px !important;
+    max-height: 500px !important;
+}
+
+.AlliantFavoriteIcon .icon {
+    display: none;
+    width: 10px;
+    height: 10px;
+}
+
+.AlliantFavoriteIcon:hover .icon {
+    display: inline;
+    float:right !important;
+}
+
+.AlliantFavoriteIcon {
+    padding-left: 10px;
+}
+
+.AlliantFavoriteIcon:hover {
+    padding-left: 0px;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-button {
+    background: #ccc
+}
+
+::-webkit-scrollbar-track-piece {
+    background: #eee
+}
+
+::-webkit-scrollbar-thumb {
+    background: slategrey;
+}
+
+.k-multicheck-wrap .k-item {
+    line-height: 1rem;
+}
+.k-link k-menu-link {
+    display: table-column;
+}
+.alliantwhite-space {
+    white-space: nowrap;
+}
+
+.k-grid-filter.k-state-active {
+    background-color: #666ee8;
+    color:#fff;
+}
+
+/**
+For kendo grid sorting icon display
+*/
+/* sort icon color */
+.k-grid-header .k-header > .k-link > .k-icon:before {
+    color: #666ee8;
+}
+/* sort order number color */
+.k-grid-header .k-header > .k-link > span.k-sort-order {
+    color: #666ee8;
+}
+
+/* move sort icon and number to left and shift text right to make room for them when a column is sorted */
+.k-grid-header th.k-header.k-sorted > .k-link {
+    position: relative;
+    padding-left: 18px;
+}
+
+.k-grid-header .k-header.k-sorted > .k-link > .k-icon.k-i-sort-asc-sm,
+.k-grid-header .k-header.k-sorted > .k-link > .k-icon.k-i-sort-desc-sm {
+    position: absolute;
+    top: 9px;
+    left: -12px;
+}
+
+.k-grid-header .k-header.k-sorted > .k-link > .k-sort-order {
+    position: absolute;
+    top: 6px;
+    left: 10px;
+}
+
+.k-popup .k-item.k-first {
+    position: relative;
+    display: none;
+}
+.k-grid td {
+    border-style: solid;
+    border-width: 0 0 0 1px;   
+    overflow: hidden;
+    line-height: 1.6em;
+    vertical-align: middle;
+    text-overflow: ellipsis;
+    padding:0px;
+    padding-left: 3px;
+}
+
+.daterangepicker.show-calendar .ranges {
+    overflow: auto;
+    max-height: 222px;
+}
+.k-pdf-export .k-filterable .k-grid-filter {
+    display: none;
+}
+.k-grid-header th.k-header {
+   vertical-align: top !important;
+}
+.k-filter-row th, .k-grid-header th.k-header {
+    white-space: normal;
+}
+.k-grid-header th.k-with-icon .k-link {
+    margin-right: 0px !important;
+}
+.k-grid-header th.k-header > .k-link {
+    display: block;
+    min-height: 18px;
+    line-height: 18px;
+    margin: -.5em 0 -.4em 0 !important;
+    padding: .5em 0 .4em 0 !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.k-grid-toolbar .k-button {
+    vertical-align: middle;
+    padding: 6.5px;
+    border-radius: 0;
+}
+.k-pdf-export .k-filterable .k-grid-filter {
+    display: none;
+}
+
+.CollapseToggle {
+    line-height: 0;
+    margin-top: -5px;
+}
+
+.gridSearchHeader {
+    padding: 0.5rem 0.5rem;
+}
+
+.FormCard {
+    margin-top: -10px;
+    margin-bottom: -10px;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.GridCard {
+    padding-left: 0px;
+    padding-right: 0px;
+    margin-top: -5px;
+}
+
+.gridCardBody {
+    padding: 1rem;
+}
+
+.gridHeadingElements {
+    top: 8px;
+}
+
+.gridCardHeader {
+    padding: 1rem 1rem;
+}
+
+.gridSearchHeader .SearchHeadingElements {
+    top: 11px;
+}
+
+.jsAlliant-menu-content {
+    font-size: 0.8rem !important;
+}
+
+.jskendoMenuLabel {
+    display: block !important;
+    margin-bottom: 0 !important;
+}
+
+.k-menu-group {
+    max-height: 500px !important;
+}
+
+.k-popup .k-item.k-first {
+      display:block !important;
+}
+.preview img {
+    max-width: 80px;
+    max-height: 80px;
+}
+ul.alliantFileTemplate {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+ul.alliantFileTemplate li {
+    line-height: 4rem;
+}
+
+ul.alliantFileTemplate li img {
+    float: left;
+    padding: 2px;
+    height: 4rem;
+    width: 4rem;
+}
+
+img.imgthumbnaildownload:hover {
+    -ms-transform: scale(2); /* IE 9 */
+    -webkit-transform: scale(2); /* Safari 3-8 */
+    transform: scale(2);
+}
+
+li.downloadtemplateLi {
+height:auto !important;
+}
+
+li[data-role=menutitle] {
+    border-color: #666ee8 !important;
+    background-color: #666ee8 !important;
+    color: #FFFFFF !important;
+}
+
+li span.jsAlliantLockUnlockIcon {
+    color: #666ee8 !important;
+}
+.k-pager-wrap.k-pager-sm .k-pager-info {
+    display: inline-block !important;
+}
+
+.k-footer-template, .k-group-footer {
+    font-size: x-small;
+}
+
+.k-grid{
+    font-size: x-small;
+}
+
+body {
+    font-size: 0.75rem !important; /*12px*/
+}
+
+.form-control {
+    font-size: 0.75rem !important; /*12px*/
+}
+
+h4, h5, h6 {
+    font-size: 0.875rem !important; /*14px*/
+}
+
+h3 {
+    font-size: 1.125rem !important; /*18px*/
+}
+
+ .header-navbar .navbar-container ul.nav li > a.nav-link {
+    font-size: 1rem !important;
+}

@@ -1,0 +1,68 @@
+@model AlliantFileUploadModel
+@{
+    Layout = null;
+}
+<div class="alliant-file-control jsFileUploads"
+     data-url="@Url.Content(Model.Url)"
+     data-minfilesize="@(Model.MinFileSize ?? Constant.JqueryUndefined)"
+     data-maxfilesize="@(Model.MaxFileSize ?? Constant.JqueryUndefined)"
+     data-fileinput="@Model.MaxFileUpload"
+     data-filetype="@(Model.AllowFileType?? Constant.FileTypes)"
+     data-autoupload="@Model.AllowAutoUpload"
+     data-ismulti="@Model.IsMultipleFile">
+    <div class="row fileupload-buttonbar">
+        <div class="span7">
+            <!-- The fileinput-button span is used to style the file input field as button -->
+            <span class="btn btn-success fileinput-button">
+                <i class="k-icon k-i-upload"></i>
+                <span title="@Model.ButtonText"> @Model.ButtonText</span>
+                <input type="file" name="files[]" @(Model.IsMultipleFile ? "multiple" : "")
+                       @{ if (Model.HTMLAttributes != null && Model.HTMLAttributes.Count > 0) { foreach (var pair in Model.HTMLAttributes) { <text> @string.Concat(pair.Key, "=", pair.Value, "") </text>  } } }>
+            </span>            
+        </div>
+        <div class="span5">
+            <!-- The global progress bar -->
+            <div class="progress progress-success progress-striped active fade">
+                <div class="bar" style="width:0%;"></div>
+            </div>
+        </div>
+    </div>
+    <!-- The loading indicator is shown during image processing -->
+    <div class="fileupload-loading"></div>
+    <br>
+    <!-- The table listing the files available for upload/download -->   
+    <ul class="files alliantFileTemplate">
+        @{
+            if (Model.Files?.Count() > 0)
+            {
+                foreach (FilesDataUploadResult uploadResult in Model.Files)
+                {
+                    if (Html.IsGuid(uploadResult.name))
+                    {
+                        <li class="alliant-template-download fade downloadtemplateLi in" style="height: 0px;">
+                            <span>
+                                <img onerror="this.style.display='none'" class="imgthumbnaildownload" src="@Url.Content(uploadResult.filePath)" />
+                                @uploadResult.originalFileName.Substring(Constant.DefaultNameLength, uploadResult.originalFileName.Length - Constant.DefaultNameLength)
+                                <button class="btn btn-danger jsAlliantFileDelete" type="button" title="Delete" data-type="POST"
+                                        data-url="@Url.Action("DeleteSaveFile","_FileUploader",new { area=string.Empty,fileName=uploadResult.filePath})">
+                                    <span class="k-icon k-i-delete"></span>
+                                </button>
+                                <a class="btn btn-primary" data-type="POST"
+                                   data-url="@Url.Action("DownloadSaveFile","_FileUploader",new { area=string.Empty,fileName=uploadResult.filePath})"
+                                   target="_blank"
+                                   href="@Url.Action("DownloadSaveFile","_FileUploader",new { area=string.Empty,fileName=uploadResult.filePath})">
+                                    <span class="k-icon k-i-download"></span>
+                                </a>
+                                <input type="hidden" name="FileName" value="@uploadResult.filePath">
+                                <input type="hidden" name="OriginalFileName" value="@uploadResult.originalFileName">
+                                <input type="hidden" name="FilePath" value="@uploadResult.filePath">
+                                <input type="hidden" name="IsUploded" value="false">
+                            </span>
+                        </li>
+                    }
+                }
+            }
+        }
+
+    </ul>
+</div>

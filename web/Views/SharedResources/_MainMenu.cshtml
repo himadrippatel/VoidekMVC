@@ -1,0 +1,36 @@
+﻿@model List<AlliantMenu>
+@{
+    if (Model != null)
+    {
+        foreach (AlliantMenu oMenu in Model)
+        {
+            if (oMenu.ActionName == "#")
+            {
+                <li class="nav-item">
+                    <a href="#menu_@oMenu.MenuID" data-toggle="collapse">
+                        @Html.Raw(oMenu.LinkText) @*<span class="badge badge badge-pill badge-danger float-right mr-2">@oMenu.ChildMenu.Count()</span>*@
+                    </a>
+                    @if (oMenu.ChildMenu.Count() > 0)
+                    {
+                        <ul class="menu-content jsAlliant-menu-content" id="menu_@oMenu.MenuID">                          
+                            @foreach (AlliantMenu oChildMenu in oMenu.ChildMenu)
+                            {
+                            <li id="@oChildMenu.MenuID" class="AlliantFavoriteIcon" data-child="true" data-childmenuid="@oChildMenu.ID">
+                                @Html.Raw(Html.ActionLink("###Text###", oChildMenu.ActionName, oChildMenu.ControllerName, oChildMenu.RouteData, oChildMenu.HtmlAttributes).ToHtmlString().Replace("###Text###", $"{oChildMenu.LinkText}<i title=\"Add to favorites\" class=\"icon ft-bookmark jsAlliantQuickLink\"></i>"))                           
+                            </li>
+                            }
+                        </ul>
+                    }
+                </li>
+            }
+            else
+            {
+                <li id="@oMenu.MenuID" class="AlliantFavoriteIcon" data-menuid="@oMenu.ID" data-parent="true">
+                    @Html.Raw(Html.ActionLink("###Text###", oMenu.ActionName, oMenu.ControllerName, oMenu.RouteData, oMenu.HtmlAttributes).ToHtmlString().Replace("###Text###",$"{oMenu.LinkText}<i title=\"Add to favorites\" class=\"icon ft-bookmark jsAlliantQuickLink\"></i>"))                     
+                </li>
+            }
+        }
+    }
+}
+
+

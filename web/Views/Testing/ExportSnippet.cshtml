@@ -1,0 +1,84 @@
+﻿<div class="row">
+    <div class="col-md-12">
+        <div id="grid"></div>
+        <script>
+            $(function () {
+                $("#grid").html('').kendoGrid({
+                    toolbar: ["excel"],
+                    excelExport: function (e) {
+                        var columns = e.workbook.sheets[0].columns;
+                        columns.forEach(function (column) {
+                            delete column.width;
+                            column.autoWidth = true;
+                        });
+
+                        var rows = e.workbook.sheets[0].rows;
+
+                        for (var ri = 0; ri < rows.length; ri++) {
+                            var row = rows[ri];
+
+                            if (row.type == "group-footer" || row.type == "footer") {
+                                for (var ci = 0; ci < row.cells.length; ci++) {
+                                    var cell = row.cells[ci];
+                                    if (cell.value) {
+                                        // Use jQuery.fn.text to remove the HTML and get only the text
+                                        cell.value = $(cell.value).text();
+                                        // Set the alignment
+                                        cell.hAlign = "right";
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    dataSource: {
+                        type: "odata",
+                        transport: {
+                            read: "https://demos.telerik.com/kendo-ui/service/Northwind.svc/Products"
+                        },
+                        schema: {
+                            model: {
+                                fields: {
+                                    UnitsInStock: { type: "number" },
+                                    ProductName: { type: "string" },
+                                    UnitPrice: { type: "number" },
+                                    UnitsOnOrder: { type: "number" },
+                                    UnitsInStock: { type: "number" }
+                                }
+                            }
+                        },
+                        pageSize: 7,
+                        group: {
+                            field: "UnitsInStock", aggregates: [
+                                { field: "ProductName", aggregate: "count" },
+                                { field: "UnitPrice", aggregate: "sum" },
+                                { field: "UnitsOnOrder", aggregate: "average" },
+                                { field: "UnitsInStock", aggregate: "count" }
+                            ]
+                        },
+
+                        aggregate: [{ field: "ProductName", aggregate: "count" },
+                        { field: "UnitPrice", aggregate: "sum" },
+                        { field: "UnitsOnOrder", aggregate: "average" },
+                        { field: "UnitsInStock", aggregate: "min" },
+                        { field: "UnitsInStock", aggregate: "max" }]
+                    },
+                    sortable: true,
+                    scrollable: false,
+                    pageable: true,
+                    columns: [
+                        { field: "ProductName", title: "Product Name", aggregates: ["count"], footerTemplate: "<div style='text-align:right'>Total Count: #=count#</div>", groupFooterTemplate: "<div style='text-align:right'>Count: #=count#</div>" },
+                        { field: "UnitPrice", title: "Unit Price", aggregates: ["sum"] },
+                        {
+                            field: "UnitsOnOrder", title: "Units On Order", aggregates: ["average"], footerTemplate: "<div style='text-align:right'>Average: #=average#</div>",
+                            groupFooterTemplate: "<div>Average: #=average#</div>"
+                        },
+                        {
+                            field: "UnitsInStock", title: "Units In Stock", aggregates: ["min", "max", "count"], footerTemplate: "<div style='text-align:right'>Min: #= min # Max: #= max #</div>",
+                            groupHeaderTemplate: "Units In Stock: #= value # (Count: #= count#)"
+                        }
+                    ]
+                });
+            });
+        </script>
+    </div>
+</div>

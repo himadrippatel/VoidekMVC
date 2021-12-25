@@ -1,0 +1,36 @@
+﻿@model AlliantDropDownDataModel
+@{
+    Layout = null;
+    AlliantDropDownDataModel oModel;
+    if (Model != null)
+    {
+        oModel = Model;
+    }
+    else
+    {
+        oModel = new AlliantDropDownDataModel() { ConfigurationOptions = new DropDownConfigurations() };
+    }
+    DropDownConfigurations oConfig = oModel.ConfigurationOptions;
+    oConfig.ControlID = oConfig.ControlID ?? "DropDownList";
+    oConfig.IDPrefix = oConfig.IDPrefix ?? "";
+    oConfig.ValueFieldName = oConfig.ValueFieldName ?? "Key";
+    oConfig.DisplayTextFieldName = oConfig.DisplayTextFieldName ?? "Value";
+    string oControlID = oConfig.IDPrefix + oConfig.ControlID;
+    var oDataList = new SelectList(oModel.Model, oConfig.ValueFieldName, oConfig.DisplayTextFieldName, oConfig.SelectedValue);
+    if (oConfig.FirstItemValue != null || oConfig.FirstItemDisplayText != null)
+    {
+        var oTemplist = oDataList.ToList();
+        oTemplist.Insert(0, new SelectListItem() { Value = oConfig.FirstItemValue ?? "", Text = oConfig.FirstItemDisplayText ?? "Select" });
+        oDataList = new SelectList((IEnumerable<SelectListItem>)oTemplist, "Value", "Text", oConfig.SelectedValue);
+    }
+    try
+    {
+        if (oConfig.HTMLAttributes != null && oConfig.HTMLAttributes.ToString().Contains("{"))
+        {
+            oConfig.HTMLAttributes = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(oConfig.HTMLAttributes.ToString());
+        }
+    }
+    catch { }
+    var oDictionaryAttributes = (oConfig.HTMLAttributes ?? new Dictionary<string, object>()) as IDictionary<string, object>;
+}
+@Html.DropDownList(oControlID, oDataList, oDictionaryAttributes)

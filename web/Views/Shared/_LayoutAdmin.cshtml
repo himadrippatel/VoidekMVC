@@ -1,0 +1,81 @@
+﻿@using  Alliant.Domain
+<!DOCTYPE html>
+@{ 
+    UserSession userSession = (UserSession)ViewBag.LayoutModel ?? new UserSession();
+}
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="description" content="Test-Content">
+    <meta name="keywords" content="Test-Keyword">
+    <meta name="author" content="Test-author">
+    <title>@ViewBag.Title</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i%7CQuicksand:300,400,500,700" rel="stylesheet">
+    @Html.Partial("_PartialCSS")
+    @RenderSection("CSSSection", false) 
+    
+</head>
+<body class="vertical-layout vertical-menu-modern 2-columns   fixed-navbar" data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
+    <div id="jsloading">
+        <img id="loading-image" src="@Url.Content("~/Content/images/loader.gif")" alt="Loading..." />
+    </div>
+    <div class="jsLoaderSearchTemplate">
+        <div class="ball-scale-ripple loader-deep-orange">
+            <div></div>
+        </div>
+    </div>
+    @Html.Partial("_PartialHeader", userSession)
+    @Html.Partial("_PartialLeftMenu", userSession)
+    <div class="app-content content">
+        <div class="content-overlay"></div>
+        <div class="content-wrapper">
+            @*<div class="content-header row">
+                    <div class="content-header-left col-md-12 col-12 mb-2 breadcrumb-new">
+                        <div class="row breadcrumbs-top d-inline-block">
+                                <div class="breadcrumb-wrapper col-12">
+                                   @RenderSection("Breadcrumb", false)
+                                </div>
+                            </div>
+                        <h3 class="content-header-title mb-0 d-inline-block">
+                            <span class="jsTitleHeader">@ViewBag.Title</span>
+                            @RenderSection("Breadcrumb", false)
+                        </h3>
+                        <div class="row breadcrumbs-top d-inline-block">
+                            <div class="breadcrumb-wrapper col-12">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item">
+                                        <a href="@Url.Action("Index","Home")">Home</a>
+                                    </li>
+                                    <li class="breadcrumb-item">
+                                        <a href="#">Dyanmic Come after some time</a>
+                                    </li>
+                                    <li class="breadcrumb-item active">
+                                        Page Title
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>*@
+            <div id="jsAjaxContent" class="jsAjaxContent">
+                @RenderBody()
+            </div>
+        </div>
+        <div id="ForMessage">
+        </div>
+        <div class="jsModelShow">
+
+        </div>
+    </div>
+    @Html.Hidden("jsSharedResourcesFavorite", Url.Action("Favorite", "SharedResources"))
+    @Html.Hidden("jsSharedResourcesRecentMenu", Url.Action("RecentMenu", "SharedResources"))
+    @Html.Hidden("jsGridConfigurationReports", Url.Action("GridConfiguration", "Reports"))
+    @Html.Partial("_PartialFooter")
+    @Html.Partial("_PartialFileTemplate")
+    @Html.Partial("_PartialJS")
+    @RenderSection("JSSection", false)
+
+</body>
+</html>

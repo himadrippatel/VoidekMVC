@@ -1,0 +1,82 @@
+﻿@model Alliant.Domain.Role
+@{
+    ViewBag.Title = "Edit Create";
+
+    IDictionary<string, object> oRequired = Html.GetAlliantValidationAttributes(new List<AlliantValidations>()
+{ AlliantValidations.Required});
+}
+<div class="content-body">
+    <section class="horizontal-grid" id="horizontal-grid">
+        @if (Model == null)
+        {
+            @Html.Partial("_NotFound")
+        }
+        else
+        {
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Update Roles</h4>
+                            <a class="heading-elements-toggle"><i class="ft-align-justify font-medium-3"></i></a>
+                            <div class="heading-elements">
+                                <ul class="list-inline mb-0">
+                                    <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            @using (Html.BeginForm())
+                            {
+                                <div class="row">
+                                    <div class="col-md-6 form-group">
+                                        <label for="Name">Name <span class="red">*</span></label>
+                                        @Html.Hidden("RoleID", Model.RoleID, new { @class = "form-control" })
+                                        @Html.TextBox("Name", Model.Name, new Dictionary<string, object>(oRequired) { { "class", "form-control" } })
+                                        @Html.AlliantValidationMessage("Name")
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <label for="ParentID">ParentID</label>
+                                        @Html.Action("RoleDropDown", "Role",
+                                        new
+                                        {
+                                            area = Html.AreaUserManagement(),
+                                            oDropDownDataModel = new AlliantDropDownDataModel()
+                                            {
+                                                ConfigurationOptions = new DropDownConfigurations()
+                                                {
+
+                                                    FirstItemDisplayText = "Select",
+                                                    ControlID = "ParentID",
+                                                    HTMLAttributes = new Dictionary<string, object>()
+                                                    {
+                                                        { "class", "form-control" },
+                                                    },
+                                                    SelectedValue=Model.ParentID.ToAlliantString()
+                                                    //,SelectedValue=(Model.ParentID!=null ? Model.ParentID.ToString() : "")
+                                                    
+                                                }
+                                            }
+                                        })
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 form-group">
+                                        <label for="IsActive">IsActive @Html.CheckBox("IsActive", Model.IsActive)</label>
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <div class="text-left">
+                                        <button type="button" class="btn btn-primary" onclick="@Html.AjaxCall("this",Url.Action("EditPost","Role",new { area=Html.AreaUserManagement()}),"POST",pReturnFunction:"function(data){$('#RoleGrid').data('kendoGrid').dataSource.read();$('#RoleForm').html('');}")">Save <i class="ft-save position-right"></i></button>
+                                        <button type="button" class="btn btn-danger jsRemoveForm" onclick="$('#RoleForm').html('');">Cancel <i class="la la-times"></i></button>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </section>
+</div>
+

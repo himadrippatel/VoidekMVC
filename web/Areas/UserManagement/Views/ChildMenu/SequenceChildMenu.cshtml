@@ -1,0 +1,20 @@
+﻿@model List<Alliant.Domain.ChildMenu>
+@{
+    ViewBag.Title = "SequenceMenu";
+}
+<div class="row">
+    <div class="col-md-6">
+        <ul id="sortable" class="list-group list jsSortable">
+            @for (int i = 0; i < Model.Count(); i++)
+            {
+                <li class="ui-state-default list-group-item" id="@Model[i].SubMenuID">
+                    <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+                    @Model[i].LinkText
+                    @Html.Hidden("menus[" + i + "].SubMenuID", Model[i].SubMenuID)
+                    @Html.Hidden("menus[" + i + "].Sequance", Model[i].Sequance, new { @class = "jsSequance", @data_index = i,@data_id=Model[i].SubMenuID })
+                </li>
+            }
+        </ul>
+    </div>
+</div>
+

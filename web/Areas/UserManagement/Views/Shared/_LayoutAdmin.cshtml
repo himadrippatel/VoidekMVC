@@ -1,0 +1,10 @@
+﻿@{
+    Layout = Constant.LayoutAdmin;
+}
+<div id="@Html.AreaUserManagement()">
+    @RenderSection("CSSSection", false)
+    @RenderSection("Breadcrumb", false)
+    @RenderBody()
+    @RenderSection("JSSection", false)
+</div>
+

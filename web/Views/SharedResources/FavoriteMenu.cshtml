@@ -1,0 +1,49 @@
+﻿@model List<Alliant.Domain.FavoriteMenu>
+<div class="content-body">
+    <section class="horizontal-grid" id="horizontal-grid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header" data-action="collapse">
+                        <h4 class="card-title">
+                            Favorites
+                        </h4>
+                        <a class="heading-elements-toggle"><i class="ft-align-justify font-medium-3"></i></a>
+                        <div class="heading-elements">
+                            <ul class="list-inline mb-0">
+                                <li><a class="jsFavoriteMenuCollapse"><i class="ft-minus"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table-responsive">
+                                    @(Html.Kendo().Grid<Alliant.Domain.FavoriteMenu>(Model)
+                                    .Name("FavoriteMenu")
+                                    .NoRecords("No record found.")
+                                    .Columns(columns =>
+                                    {
+                                        columns.Template(@<text></text>)
+                                        .HeaderTemplate("Action")
+                                        .ClientTemplate("<a href='" + Url.Action("DeleteFavoriteMenu", "SharedResources", new { area = string.Empty }) + "/#=FavoriteMenuID#' onclick='return ajaxSweetAlert(this,function(data){Reload();})'><i class='la la-remove'></i></a>");
+                                        columns.Bound(p => p.LinkText).Title("Link Name");
+                                        columns.Bound(p => p.LinkHref).Title("Link Url");
+                                        columns.Bound(p => p.CreatedOn).Title("Link Url").Format("{0:dd-MM-yyyy hh:mm:ss}"); ;
+                                    })
+                                    .Sortable()
+                                    .DataSource
+                                    (dataSource => dataSource.Ajax()
+                                    .ServerOperation(false)
+                                    .Model(FavoriteMenu => FavoriteMenu.Id(x => x.FavoriteMenuID))
+                                    )
+                                    )
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

@@ -1,0 +1,105 @@
+﻿@model Alliant.Domain.PrimaryActivity
+@{
+    ViewBag.Title = "Permission Create";
+
+    IDictionary<string, object> oRequired = Html.GetAlliantValidationAttributes(new List<AlliantValidations>()
+{ AlliantValidations.Required,AlliantValidations.RegularExpression }, new AlliantValidationAdditionalValue() { RegularExpression_CompareExpression = AlliantRegularExpresion.SmallChar_UnderScore });
+}
+<div class="content-body">
+    <section class="horizontal-grid" id="horizontal-grid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Create Permission</h4>
+                        <a class="heading-elements-toggle"><i class="ft-align-justify font-medium-3"></i></a>
+                        <div class="heading-elements">
+                            <ul class="list-inline mb-0">
+                                <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        @using (Html.BeginForm())
+                        {
+                            @*<div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label for="RoleID">Role</label>
+                                    @Html.Action("RoleDropDown", "Role",
+                                    new
+                                    {
+                                        area = Html.AreaUserManagement(),
+                                        oDropDownDataModel = new AlliantDropDownDataModel()
+                                        {
+                                            ConfigurationOptions = new DropDownConfigurations()
+                                            {
+                                                ControlID = "RoleID",
+                                                HTMLAttributes = new Dictionary<string, object>()
+                                                {
+                                                    { "class", "form-control jsSelectBox" },
+                                                }
+                                            }
+                                        }
+                                    })
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label for="ParentID">Permission</label>
+                                    @Html.Action("PermissionDropDown", "Permission",
+                                    new
+                                    {
+                                        area = Html.AreaUserManagement(),
+                                        oDropDownDataModel = new AlliantDropDownDataModel()
+                                        {
+                                            ConfigurationOptions = new DropDownConfigurations()
+                                            {
+
+                                                FirstItemDisplayText = "Select",
+                                                ControlID = "PermissionID",
+                                                HTMLAttributes = new Dictionary<string, object>()
+                                                {
+                                                    { "class", "form-control jsSelectBox" },
+                                                }
+                                            }
+                                        }
+                                    })
+                                </div>
+                            </div>*@
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <label for="ActivityName">Permission <span class="red">*</span></label>
+                                    @Html.TextBox("ActivityName", null, new Dictionary<string, object>(oRequired) { { "class", "form-control" } })
+                                    @Html.AlliantValidationMessage("ActivityName")
+                                    <div><small>Usage: Enter small letter with underscore like e.g activity_name.</small></div>
+                                    @*@Html.Partial("AutoComplete",new AlliantAutoCompleteModel() {
+            ControlID= "ActivityName",
+            HTMLAttributes= new Dictionary<string, object>(oRequired) { { "class", "jsAutoComplete form-control" } },
+            IsCacheData=true,
+            IsMultiSelect=false,
+            MinLength=3,
+            Placeholder="Type to search",
+            Url = Url.Action("Suggestion", "PrimaryActivity", new { area=Html.AreaUserManagement()}),
+            Note = "Usage: Enter small letter with underscore like e.g activity_name.",
+            SelectValue= "value"
+        })
+             @Html.AlliantValidationMessage("ActivityName_AutoComplete")*@
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <label>@Html.CheckBox("IsActive", true) IsActive</label>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <div class="text-left">
+                                    <button type="button" class="btn btn-primary" onclick="@Html.PostOnlyAjaxCall("this",Url.Action("CreatePost","PrimaryActivity",new { area=Html.AreaUserManagement()}),"POST",pReturnFunction:"function(data){$('#PrimaryActivityGrid').data('kendoGrid').dataSource.read();}")">Save & New <i class="ft-save position-right"></i></button>
+                                    <button type="button" class="btn btn-primary" onclick="@Html.AjaxCall("this",Url.Action("CreatePost","PrimaryActivity",new { area=Html.AreaUserManagement()}),"POST",pReturnFunction:"function(data){$('#PrimaryActivityGrid').data('kendoGrid').dataSource.read();$('.jsPrimaryActivityCollapse').trigger('click');$('#PrimaryActivityForm').html('');}")">Save <i class="ft-save position-right"></i></button>
+                                    <button type="button" class="btn btn-danger jsRemoveForm" onclick="RemoveAjaxContainer('PrimaryActivityForm', function () { $('.jsPrimaryActivityCollapse').trigger('click');})">Cancel <i class="la la-times"></i></button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

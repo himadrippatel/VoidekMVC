@@ -1,0 +1,37 @@
+﻿@model AlliantSelectDropDownModel
+@{
+    Layout = null;
+    IDictionary<string, object> HtmlAttributes = (Model.HTMLAttributes ?? new Dictionary<string, object>()) as IDictionary<string, object>;
+    HtmlAttributes.Add("data-minlength", Model.MinLength);
+    HtmlAttributes.Add("data-url", Model.Url);
+    HtmlAttributes.Add("data-placeholder", Model.Placeholder);
+    HtmlAttributes.Add("data-pageresult", Model.PageResult);
+    HtmlAttributes.Add("data-isimagedisplay", Model.IsImageDisplay);
+    HtmlAttributes.Add("data-isdescriptiondisplay", Model.IsDescriptionDisplay);
+    HtmlAttributes.Add("data-iscloseonselect", Model.IsCloseOnSelect);
+    HtmlAttributes.Add("data-allowClear", Model.AllowClear);
+
+    if (!string.IsNullOrEmpty(Model.ExcludeControlIDValue))
+    {
+        HtmlAttributes.Add("data-targetcontrol", Model.ExcludeControlIDValue);
+    }
+
+    if (!string.IsNullOrEmpty(Model.NotIn))
+    {
+        HtmlAttributes.Add("data-fixedvalue", Model.NotIn);
+    }
+
+    if (Model.IsMultiSelect)
+    {
+        HtmlAttributes.Add("multiple", true);
+    }
+
+    SelectList select = new SelectList(new List<string>());
+}
+@Html.DropDownList(Model.ControlID, select, HtmlAttributes)
+@if (!string.IsNullOrEmpty(Model.Note))
+{
+<div>
+    <small>@Model.Note</small>
+</div>
+}

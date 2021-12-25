@@ -1,0 +1,44 @@
+﻿
+@{
+    ViewBag.Title = "SliderWithTB";
+}
+
+<h2> Jquery slider with two handles with inputs from two textbox</h2>
+
+<form>
+    <div>
+        <input type="text" class="sliderValue" data-index="0" value="10" />
+        <input type="text" class="sliderValue" data-index="1" value="90" />
+    </div>
+    <br />
+    <div id="slider"></div>
+</form>
+<script>
+    $(document).ready(function () {
+        $("#slider").slider({
+            min: 0,
+            max: 100,
+            step: 1,
+            range: true,
+            values: [10, 90],
+            slide: function (event, ui) {
+                for (var i = 0; i < ui.values.length; ++i) {
+                    $("input.sliderValue[data-index=" + i + "]").val(ui.values[i]);
+                }
+            }
+        });
+
+        $("input.sliderValue").change(function () {
+            var $this = $(this);
+            $("#slider").slider("values", $this.data("index"), $this.val());
+        });
+    });
+</script>
+<style>
+    body {
+        font-family: Verdana, Arial, sans-serif;
+        font-size: 12px;
+    }
+
+
+</style>

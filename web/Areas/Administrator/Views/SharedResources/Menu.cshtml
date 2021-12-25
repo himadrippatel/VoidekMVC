@@ -1,0 +1,44 @@
+﻿@*@model Dictionary<string, bool>
+    @{
+        Layout = null;
+        var lstMenu = new List<AlliantMenu>();
+        var oModel = new Dictionary<string, bool>();
+        var oHtmlAttributes = new { @onclick = "return ajaxAnchorClick(this)", @data_ajaxdivid = "jsAjaxContent" };
+        var oRouteData = new { @area = Html.AreaAdministrator() };
+        if (Model != null)
+        {
+            oModel = Model;
+        }
+
+        if (oModel["GeneralMaster"])
+        {
+            var oGeneralMaster = new AlliantMenu()
+            {
+                LinkText = "<i class=\"la la-navicon\"></i><span class=\"menu-title\">General Masters</span>",
+                MenuID = Guid.NewGuid(),
+                ActionName = "#"
+            };
+
+            oGeneralMaster.ChildMenu.Add(new AlliantMenu()
+            {
+                ControllerName = "Country",
+                ActionName = "Index",
+                LinkText = "Country",
+                HtmlAttributes = oHtmlAttributes,
+                RouteData = oRouteData
+            });
+            oGeneralMaster.ChildMenu.Add(new AlliantMenu()
+            {
+                ControllerName = "State",
+                ActionName = "Index",
+                LinkText = "State",
+                HtmlAttributes = oHtmlAttributes,
+                RouteData = oRouteData
+            });
+
+            lstMenu.Add(oGeneralMaster);
+        }
+
+    }*@
+@model List<AlliantMenu>
+@Html.Partial("_MainMenu", Model)

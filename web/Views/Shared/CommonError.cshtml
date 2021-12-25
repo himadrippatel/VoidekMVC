@@ -1,0 +1,14 @@
+﻿@model HandleErrorInfo
+    @{ 
+        ViewBag.Title = "Alliant Error handling";
+    }
+<div class="row">
+    <div class="col-md-12">
+        <div class="bs-callout-pink callout-border-left mt-1 p-1">
+            <strong>Error</strong>
+            <p>
+                @Html.Raw(Model.Exception.Message)
+            </p>
+        </div>
+    </div>
+</div>

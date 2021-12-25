@@ -1,0 +1,273 @@
+﻿@model Tuple<List<Alliant.Models.AreaModel>, List<Alliant.Domain.PrimaryActivity>>
+@{
+    ViewBag.Title = "Sync";
+    IList<string> defaultActivity = new List<string>() { "create", "update", "delete", "search" };
+    IList<string> activitys = new List<string>();
+    IList<string> createdActivitys = Model.Item2.Select(x => x.ActivityName).ToList();
+}
+
+<div class="content-body">
+    <section class="horizontal-grid" id="horizontal-grid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">
+                            Sync Controller
+
+                            <button type="button" class="btn btn-primary" onclick="bindActivity(this)"><i class="ft ft-git-pull-request"></i> Sync</button>
+                        </h4>
+                        <a class="heading-elements-toggle"><i class="ft-align-justify font-medium-3"></i></a>
+                        <div class="heading-elements">
+                            <ul class="list-inline mb-0">
+                                <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="jsLoadActivityContent" class="row">
+
+                        </div>
+                        @using (Html.BeginForm())
+                        {
+                            foreach (var areaModel in Model.Item1.Where(x => x.Name != "Alliant.Controllers"))
+                            {
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h4 class="card-title"><i class="ft-home"></i> @string.Concat(areaModel.Name, " [", areaModel.Namespace[0], "]")</h4>
+                                                <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
+                                                <div class="heading-elements">
+                                                    <ul class="list-inline mb-0">
+                                                        <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="card-content collapse show" style="">
+                                                <div class="card-body card-text">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="table-responsive">
+                                                                <table class="table table-borderd">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Controller Name</th>
+                                                                            <th>NameSpace</th>
+                                                                            <th>Action</th>
+                                                                            <th>Activity</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        @foreach (var controller in areaModel.ControllerModels)
+                                                                        {
+                                                                            <tr>
+                                                                                <td>
+                                                                                    @controller.Name
+                                                                                </td>
+                                                                                <td>
+                                                                                    @controller.Namespace
+                                                                                </td>
+                                                                                <td>
+                                                                                    <ul>
+                                                                                        @foreach (var actionModel in controller.ActionModels)
+                                                                                        {
+                                                                                            <li>@actionModel.Name</li>
+                                                                                        }
+                                                                                    </ul>
+                                                                                </td>
+                                                                                <td>
+                                                                                    @BindActivity(controller.ActionModels, areaModel.Name, controller.Name, activitys)
+                                                                                </td>
+                                                                            </tr>
+                                                                        }
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            foreach (var areaModel in Model.Item1.Where(x => x.Name == "Alliant.Controllers"))
+                            {
+                                <div class="row text-white">
+                                    <div class="col-md-12">
+                                        <div class="card text-white box-shadow-0 bg-gradient-y2-cyan">
+                                            <div class="card-header">
+                                                <h4 class="card-title"><i class="ft-home"></i> @string.Concat(areaModel.Name, " [mainmenu]")</h4>
+                                                <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
+                                                <div class="heading-elements">
+                                                    <ul class="list-inline mb-0">
+                                                        <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="card-content collapse show" style="">
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="table-responsive">
+                                                                <table class="table table-borderd">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Controller Name</th>
+                                                                            <th>NameSpace</th>
+                                                                            <th>Action</th>
+                                                                            <th>Activity</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody class="text-white">
+                                                                        @foreach (var controller in areaModel.ControllerModels)
+                                                                        {
+                                                                            <tr>
+                                                                                <td>
+                                                                                    @controller.Name
+                                                                                </td>
+                                                                                <td>
+                                                                                    @controller.Namespace
+                                                                                </td>
+                                                                                <td>
+                                                                                    <ul>
+                                                                                        @foreach (var actionModel in controller.ActionModels)
+                                                                                        {
+                                                                                            <li>@actionModel.Name</li>
+                                                                                        }
+                                                                                    </ul>
+                                                                                </td>
+                                                                                <td>
+                                                                                    @BindActivity(controller.ActionModels, "mainmenu", controller.Name, activitys)
+                                                                                </td>
+                                                                            </tr>
+                                                                        }
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                            <div class="row hide" id="jsActivityContent">
+                                <div class="col-md-12">
+                                    <div class="card text-white box-shadow-0 bg-gradient-x2-pink">
+                                        <div class="card-header">
+                                            <h4 class="card-title text-white"><i class="ft ft-plus"></i> Activity Need to add</h4>
+                                            <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
+                                            <div class="heading-elements">
+                                                <ul class="list-inline mb-0">
+                                                    <li><a data-action="collapse"><i class="ft-minus"></i></a></li>                                                  
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="card-content collapse show" style="">
+                                            <div class="card-body text-white">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        @{ 
+                                                            var newActivitys = activitys.Except(createdActivitys);
+                                                            foreach (string activity in newActivitys)
+                                                            {
+                                                        <div>
+                                                            <label><input type="checkbox" checked="" class="jsActivityCheckbox" /> @activity</label>
+                                                        </div>
+                                                            }
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+@helper BindActivity(IEnumerable<Alliant.Models.ActionModel> actionModels, string areaName, string controllerName, IList<string> activitys)
+{
+    <ul class="card-text">
+        @{
+            areaName = areaName.ToLower();
+            controllerName = controllerName.ToLower();
+
+            <li>
+                <label>
+                    <input type="checkbox" class="jsActivityParent" />
+                    @{
+                        <span>@string.Concat("activity_", areaName, "_", controllerName)</span>
+                        activitys.Add(string.Concat("activity_", areaName, "_", controllerName));
+                    }
+
+                </label>
+            </li>
+            if (actionModels.Any(x => x.Name == "Index" || x.Name.Contains("Search")))
+            {
+                <li>
+                    <label>
+                        <input type="checkbox" class="jsActivityChild" />
+                        @{
+                            <span>@string.Concat("activity_", areaName, "_", controllerName, "_search")</span>
+                            activitys.Add(string.Concat("activity_", areaName, "_", controllerName, "_search"));
+                        }
+                    </label>
+                </li>
+            }
+            if (actionModels.Any(x => x.Name == "Craete" || x.Name == "CreatePost"))
+            {
+                <li>
+                    <label>
+                        <input type="checkbox" class="jsActivityChild" />
+                        @{
+                            <span>@string.Concat("activity_", areaName, "_", controllerName, "_insert")</span>
+                            activitys.Add(string.Concat("activity_", areaName, "_", controllerName, "_insert"));
+                        }
+                    </label>
+                </li>
+            }
+            if (actionModels.Any(x => x.Name == "Edit" || x.Name == "EditPost"))
+            {
+                <li>
+                    <label>
+                        <input type="checkbox" class="jsActivityChild" />
+                        @{
+                            <span>@string.Concat("activity_", areaName, "_", controllerName, "_update")</span>
+                            activitys.Add(string.Concat("activity_", areaName, "_", controllerName, "_update"));
+                        }
+                    </label>
+                </li>
+            }
+            if (actionModels.Any(x => x.Name == "Delete" || x.Name == "DeletePost"))
+            {
+                <li>
+                    <label>
+                        <input type="checkbox" class="jsActivityChild" />
+                        @{
+                            <span>@string.Concat("activity_", areaName, "_", controllerName, "_delete")</span>
+                            activitys.Add(string.Concat("activity_", areaName, "_", controllerName, "_delete"));
+                        }
+                    </label>
+                </li>
+            }
+        }
+    </ul>
+}
+@section JSSection
+{
+    <script type="text/javascript">
+        function bindActivity()
+        {
+            $('#jsLoadActivityContent').html($('#jsActivityContent').html());
+        }
+    </script>
+}

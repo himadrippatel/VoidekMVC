@@ -1,0 +1,48 @@
+﻿@using Alliant.Domain@model List<FavoriteMenu>
+@{
+    if (Model.Count > 0)
+    {
+        <li class="nav-item has-sub">
+            <a href="#"><i class="ft ft-heart"></i> <span>Favorites</span></a>
+            <ul class="menu-content">
+                @{
+                    foreach (FavoriteMenu favoriteMenu in Model.Where(x => x.IsFavorite))
+                    {
+                <li>
+
+                    <a href="@Url.Content(favoriteMenu.LinkHref)" style="position:absolute;padding:12px 18px 12px 0px;left:50px;" onclick="return ajaxAnchorClick(this)" data-ajaxdivid="jsAjaxContent">
+                        @*<i class="la la-map-pin"></i>*@ @favoriteMenu.LinkText
+                    </a>
+                    <a 
+                       href="@Url.Action("DeleteFavoriteMenu", "SharedResources", new { area = string.Empty , FavoriteMenuID = favoriteMenu.FavoriteMenuID})" onclick="return ajaxSweetAlert(this, function () { Reload(); });"
+                       style="padding-left:30px;"                       
+                       >
+                        <i class="la la-trash"></i>
+                    </a>
+                </li>
+                    }
+                  
+                    if (Model.Where(x => !x.IsFavorite).Count() > 0)
+                    {
+                       
+
+                    <li>                    
+                        <div class="dropdown-divider"></div>
+                        <label><i class="la la-history"></i> Recently Added </label>
+                      
+                    </li>
+                        foreach (FavoriteMenu favoriteMenu in Model.Where(x => !x.IsFavorite))
+                        {
+
+                            <li>
+                                <a href="@Url.Content(favoriteMenu.LinkHref)" onclick="return ajaxAnchorClick(this)" data-ajaxdivid="jsAjaxContent">
+                                    @favoriteMenu.LinkText
+                                </a>
+                            </li>
+                        }
+                    }
+                }
+            </ul>
+        </li>
+    }
+}

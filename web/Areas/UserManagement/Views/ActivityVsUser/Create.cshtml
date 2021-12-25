@@ -1,0 +1,151 @@
+﻿@model List<Alliant.Domain.SecondaryActivity>
+@{
+    ViewBag.Title = "Create User Permission";
+    IDictionary<string, object> oRequired = Html.GetAlliantValidationAttributes(new List<AlliantValidations>() { AlliantValidations.Required });
+    int index = -1;
+}
+<div class="content-body">
+    <section class="horizontal-grid" id="horizontal-grid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Create User Permission</h4>
+                        <a class="heading-elements-toggle"><i class="ft-align-justify font-medium-3"></i></a>
+                        <div class="heading-elements">
+                            <ul class="list-inline mb-0">
+                                <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        @using (Html.BeginForm())
+                        {
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <label>Select User <span class="red">*</span></label>
+                                    @Html.Partial("SelectDropdown", new AlliantSelectDropDownModel() {
+                                      ControlID="UserIDs",
+                                      HTMLAttributes=new Dictionary<string, object>(oRequired) { { "class", "jsRemoteSelectBox form-control" } },
+                                      IsMultiSelect=true,
+                                      MinLength=3,
+                                      Note= "Usage: Enter at least three characters to get users name suggestions. Select a value to continue adding more users.",
+                                      PageResult=10,
+                                      Url= Url.Action("SearchUser", "RoleVsUser", new { area = Html.AreaUserManagement() }),
+                                      Placeholder= "Type to search users",
+                                      IsImageDisplay=true,
+                                      IsCloseOnSelect=true,
+                                     })
+                                    @Html.AlliantValidationMessage("UserIDs")
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 form-group table-responsive">
+                                    <label>Select Permission <span class="red">*</span></label>
+                                    @Html.TextBox("jstree_search", null, new { @class = "form-control", @placeholder = "Type to search permissions" })
+                                </div>
+                                <div class="col-md-12 form-group skin skin-square table-responsive">
+                                    @Html.AlliantValidationMessage("ActivityIDs")
+                                    <div id="jsTree" class="jsTree" data-three-state="false">
+                                        @DisplayTree(Model.Where(x => x.PrimaryActivityID == 0), index)
+                                    </div>                                    
+                                    @helper DisplayTree(IEnumerable<Alliant.Domain.SecondaryActivity> secondaryActivitiesroles, int index)
+                                    {
+                                        index++;
+                                        <ul>
+                                            @foreach (var secondary in secondaryActivitiesroles)
+                                            {
+                                                <li id="secondary_@secondary.ActivityID" data-id="@secondary.ActivityID" data-parentid="@secondary.PrimaryActivityID">
+                                                    <label>
+                                                        @*@Html.CheckBox(string.Concat("SecondaryActivityID[", index, Guid.NewGuid(), "]"), false, new { @data_id = secondary.ActivityID, @data_parentid = secondary.PrimaryActivityID, @class = "jsPrimaryActivityCheckBox" })*@
+                                                        @secondary.ActivityName
+                                                    </label>
+                                                    @{
+                                                        var children = Model.Where(e => e.PrimaryActivityID == secondary.ActivityID);
+                                                        if (children.Count() > 0)
+                                                        {
+                                                            @DisplayTree(children, index)
+                                                        }
+                                                    }
+                                                </li>
+                                            }
+                                        </ul>
+                                    }
+                                    @Html.Hidden("ActivityIDs", null, new Dictionary<string, object>(oRequired) { })
+                                    @Html.Hidden("PrimaryActivityIDs")
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <div class="text-left">
+                                    <button type="button" class="btn btn-primary jsCreatePrimaryActivity" onclick="">Save <i class="ft-save position-right"></i></button>
+                                    <button type="button" class="btn btn-danger jsRemoveForm" onclick="RemoveAjaxContainer('ActivityVsUserForm', function () { $('.jsActivityVsUserCollapse').trigger('click');})">Cancel <i class="la la-times"></i></button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+@section JSSection
+{
+    <script>
+        $(document).ready(function ()
+        {  
+            $('#jstree_search').keyup(function () {
+                $('#jsTree').jstree(true).show_all();
+                $('#jsTree').jstree('search', $(this).val());
+            });
+            $(".jsCreatePrimaryActivity").click(function ()
+            {
+                try
+                {                  
+                    var ActivityIDs = [], PrimaryActivityIDs = [];  
+                    var selectedNodes = $('#jsTree').jstree("get_selected", true);                  
+                    $.each(selectedNodes, function ()
+                    {   
+                        var node = this;
+                        var isParent = (node.children.length > 0);                       
+                        if (isParent)
+                        {
+                            ActivityIDs.push(node.data.id);
+                            PrimaryActivityIDs.push(node.data.parentid);
+                            
+                            for (var i = 0; i < node.children.length; i++)
+                            {                                
+                                ActivityIDs = ActivityIDs.filter(function (elem) { return elem !== parseInt(node.children[i].split('_')[1]) });
+                            }                           
+                        }
+                        else
+                        {
+                            var childrenHasParent = node.parent.split('_')[1];
+                            if (jQuery.inArray(parseInt(childrenHasParent), ActivityIDs) == -1)
+                            {
+                                ActivityIDs.push(node.data.id);
+                                PrimaryActivityIDs.push(node.data.parentid);
+                            }                            
+                        }                       
+                    });
+                   
+                    PrimaryActivityIDs = PrimaryActivityIDs.filter((v, p) => PrimaryActivityIDs.indexOf(v) == p);
+
+                    $("#ActivityIDs").val(ActivityIDs.join());
+                    $("#PrimaryActivityIDs").val(PrimaryActivityIDs.join())
+                    AjaxCall(this, '@Url.Action("CreatePost", "ActivityVsUser", new { area = Html.AreaUserManagement() })', "POST", true, undefined, undefined, undefined, false,
+                        function (data)
+                        {
+                            $('#ActivityVsUserGrid').data('kendoGrid').dataSource.read();
+                            RemoveAjaxContainer('ActivityVsUserForm', function ()
+                            { $('.jsActivityVsUserCollapse').trigger('click'); });
+                        }
+                    );
+                }
+                catch (e)
+                {
+                    console.log("Error " + e.message);
+                }
+            });
+        });
+    </script>
+}

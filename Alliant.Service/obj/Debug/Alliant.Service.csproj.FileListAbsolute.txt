@@ -1,0 +1,11 @@
+D:\Arpit\Alliant_internal\Alliant.Service\bin\Debug\Alliant.Service.dll
+D:\Arpit\Alliant_internal\Alliant.Service\bin\Debug\Alliant.Service.pdb
+D:\Arpit\Alliant_internal\Alliant.Service\obj\Debug\Alliant.Service.csproj.CoreCompileInputs.cache
+D:\Arpit\Alliant_internal\Alliant.Service\obj\Debug\Alliant.Service.dll
+D:\Arpit\Alliant_internal\Alliant.Service\obj\Debug\Alliant.Service.pdb
+D:\Arpit\Alliant_internal\Alliant.Service\obj\Debug\Alliant.Service.csprojAssemblyReference.cache
+D:\Projects\Alliant_internal_Test\Alliant_internal_Test\Alliant_internal\Alliant.Service\bin\Debug\Alliant.Service.dll
+D:\Projects\Alliant_internal_Test\Alliant_internal_Test\Alliant_internal\Alliant.Service\bin\Debug\Alliant.Service.pdb
+D:\Projects\Alliant_internal_Test\Alliant_internal_Test\Alliant_internal\Alliant.Service\obj\Debug\Alliant.Service.csproj.CoreCompileInputs.cache
+D:\Projects\Alliant_internal_Test\Alliant_internal_Test\Alliant_internal\Alliant.Service\obj\Debug\Alliant.Service.dll
+D:\Projects\Alliant_internal_Test\Alliant_internal_Test\Alliant_internal\Alliant.Service\obj\Debug\Alliant.Service.pdb

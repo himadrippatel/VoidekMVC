@@ -1,0 +1,101 @@
+﻿@model Alliant.Domain.Role
+@{
+    ViewBag.Title = "Role Create";
+
+    IDictionary<string, object> oRequired = Html.GetAlliantValidationAttributes(new List<AlliantValidations>()
+{ AlliantValidations.Required});
+}
+<div class="content-body">
+    <section class="horizontal-grid" id="horizontal-grid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Create Roles</h4>
+                        <a class="heading-elements-toggle"><i class="ft-align-justify font-medium-3"></i></a>
+                        <div class="heading-elements">
+                            <ul class="list-inline mb-0">
+                                <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        @using (Html.BeginForm())
+                        {
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label for="Name">Name<span class="red">*</span></label>
+                                    @Html.TextBox("Name", null, new Dictionary<string, object>(oRequired) { { "class", "form-control" } })
+                                    @Html.AlliantValidationMessage("Name")
+
+                                    @*@Html.TextBox("Name", null, new { @class = "form-control" })*@
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label for="ParentID">ParentID</label>
+                                    @Html.Action("RoleDropDown", "Role",
+                                    new
+                                    {
+                                        area = Html.AreaUserManagement(),
+                                        oDropDownDataModel = new AlliantDropDownDataModel()
+                                        {
+                                            ConfigurationOptions = new DropDownConfigurations()
+                                            {
+
+                                                FirstItemDisplayText = "Select",
+                                                ControlID = "ParentID",
+                                                HTMLAttributes = new Dictionary<string, object>()
+                                                {
+                                                    { "class", "form-control" },
+                                                }
+                                            }
+                                        }
+                                    })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    @*@(
+                    Html.Kendo().DropDownTree()
+                    .Name("dropdowntree")
+                    .Checkboxes(true)
+                    .DataTextField("Key")
+                    .DataTextField("Value")
+                    .DataSource(dataSource => dataSource
+                    .Read(read => read
+                    .Action("Read_DropDownTreeData", "Role", new { area = Html.AreaUserManagement() })
+                    )
+                    )
+
+        )*@
+                                    @*@(Html.Kendo().DropDownTree()
+.Name("dropdowntree")
+.DataTextField("Name")
+.DataValueField("id")
+.DataSource(dataSource => dataSource
+.Read(read => read
+.Action("RoleDropDownTreeData", "Role", new { area = Html.AreaUserManagement() })
+)
+)
+                                    )*@
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <label for="IsActive">IsActive @Html.CheckBox("IsActive", true)</label>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <div class="text-left">
+                                    <button type="button" class="btn btn-primary" onclick="@Html.PostOnlyAjaxCall("this",Url.Action("CreatePost","Role",new { area=Html.AreaUserManagement()}),"POST",pReturnFunction:"function(data){$('#RoleGrid').data('kendoGrid').dataSource.read();}")">Save & New <i class="ft-save position-right"></i></button>
+                                    <button type="button" class="btn btn-primary" onclick="@Html.AjaxCall("this",Url.Action("CreatePost","Role",new { area=Html.AreaUserManagement()}),"POST",pReturnFunction:"function(data){$('#RoleGrid').data('kendoGrid').dataSource.read();RemoveAjaxContainer('RoleForm');}")">Save <i class="ft-save position-right"></i></button>
+                                    <button type="button" class="btn btn-danger jsRemoveForm" onclick="RemoveAjaxContainer('RoleForm', function () { $('.jsRoleCollapse').trigger('click'); })">Cancel <i class="la la-times"></i></button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+

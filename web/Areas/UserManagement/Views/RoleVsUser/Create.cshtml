@@ -1,0 +1,137 @@
+﻿@model List<Alliant.Domain.Role>
+@{
+    ViewBag.Title = "Create Role User ";
+    int index = -1;
+
+    IDictionary<string, object> oRequired = Html.GetAlliantValidationAttributes(new List<AlliantValidations>() { AlliantValidations.Required });
+}
+<div class="content-body">
+    <section class="horizontal-grid" id="horizontal-grid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Create Role User</h4>
+                        <a class="heading-elements-toggle"><i class="ft-align-justify font-medium-3"></i></a>
+                        <div class="heading-elements">
+                            <ul class="list-inline mb-0">
+                                <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        @using (Html.BeginForm())
+                        {
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <label>Search User <span class="red">*</span></label>
+                                    @*<input type="text" class="jsMultiAutoComplete form-control"  data-url="@Url.Action("Search","RoleVsUser",new { area=Html.AreaUserManagement()})" data-mincharacter="3"/>*@
+                                    @*<select multiple="" data-minlength="3" class="jsRemoteSelectBox form-control"
+                                                data-url="@Url.Action("SearchUser","RoleVsUser",new { area=Html.AreaUserManagement()})"
+                                                data-placeholder="Type to search users" data-pageresult="10"></select>
+                                        <small>Usage: Enter at least three characters to get users name suggestions. Select a value to continue adding more users.</small>*@
+                                    @Html.Partial("SelectDropdown", new AlliantSelectDropDownModel() {
+                                     ControlID="UserIDs",
+                                     HTMLAttributes=new Dictionary<string, object>(oRequired) { { "class", "jsRemoteSelectBox form-control" } },
+                                     IsMultiSelect=true,
+                                     MinLength=3,
+                                     Note= "Usage: Enter at least three characters to get users name suggestions. Select a value to continue adding more users.",
+                                     PageResult=10,
+                                     Url= Url.Action("SearchUser", "RoleVsUser", new { area = Html.AreaUserManagement() }),
+                                     Placeholder= "Type to search users",
+                                     IsImageDisplay=true,
+                                     IsCloseOnSelect=true,
+                                    })
+                                    @Html.AlliantValidationMessage("UserIDs")
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <label>Select Role  <span class="red">*</span></label>
+                                    @Html.TextBox("jstree_rolesearch", null, new { @class = "form-control", @placeholder = "Type to search role" })
+                                </div>
+                                <div class="col-md-12 form-group skin skin-square table-responsive">
+                                    @Html.AlliantValidationMessage("RoleIDs")
+                                    <div id="jsTree" class="jsTree" data-three-state="false">
+                                        @DisplayTree(Model.Where(x => x.ParentID == null).OrderBy(x => x.Name), index)
+                                    </div>
+                                    @helper DisplayTree(IEnumerable<Alliant.Domain.Role> roles, int index)
+                                    {
+                                        index++;
+                                        <ul>
+                                            @foreach (var role in roles)
+                                            {
+                                                <li id="role_@role.RoleID" data-id="@role.RoleID" data-parentid="@role.ParentID">
+                                                    <label>
+                                                    @*@Html.CheckBox(string.Concat("RoleId[", index, Guid.NewGuid(), "]"), false, new { @data_id = role.RoleID, @data_parentid = role.ParentID, @class = "jsRoleCheckBox" })*@ 
+                                                        @role.DefaultName
+                                                    </label>
+                                                    @{
+                                                        var children = Model.Where(e => e.ParentID == role.RoleID).OrderBy(e => e.Name);
+                                                        if (children.Count() > 0)
+                                                        {
+                                                            @DisplayTree(children, index)
+                                                        }
+                                                    }
+                                                </li>
+                                            }
+                                        </ul>
+                                    }
+                                    @Html.Hidden("RoleIDs", null, new Dictionary<string, object>(oRequired) { })
+                                    @Html.Hidden("ParentRoleIDs")
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <div class="text-left">
+                                    <button type="button" class="btn btn-primary jsCreateRole" onclick="">Save <i class="ft-save position-right"></i></button>
+                                    <button type="button" class="btn btn-danger jsRemoveForm" onclick="RemoveAjaxContainer('RoleVsUserForm', function () { $('.jsRoleVsUserCollapse').trigger('click');})">Cancel <i class="la la-times"></i></button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+@section JSSection
+{
+    <script>
+        $(document).ready(function () {
+            $('#jstree_rolesearch').keyup(function () {
+                $('#jsTree').jstree(true).show_all();
+                $('#jsTree').jstree('search', $(this).val());
+            });
+            $(".jsCreateRole").click(function ()
+            {
+                try
+                {                    
+                    var RoleIDs = [], ParentRoleIDs = [];
+                    //$(".jsRoleCheckBox:checked").each(function () {
+                    //    RoleIDs.push($(this).data('id'));
+                    //    ParentRoleIDs.push($(this).data('parentid'));
+                    //});
+
+                    var selectedNodes = $('#jsTree').jstree("get_selected", true);
+                    $.each(selectedNodes, function () {
+                        RoleIDs.push(this.data.id);
+                        ParentRoleIDs.push(this.data.parentid);
+                    });  
+
+                    $("#RoleIDs").val(RoleIDs.join(","));
+                    $("#ParentRoleIDs").val(ParentRoleIDs.join(","))
+                    AjaxCall(this, '@Url.Action("CreatePost", "RoleVsUser", new { area = Html.AreaUserManagement() })', "POST", true, undefined, undefined, undefined, false,
+                        function (data) {
+                            $('#RoleVsUserGrid').data('kendoGrid').dataSource.read(); RemoveAjaxContainer('RoleVsUserForm', function () { $('.jsRoleVsUserCollapse').trigger('click'); });
+                        }
+                    );
+                }
+                catch (e)
+                {
+                    console.log("Error " + e.message);
+                }
+            });
+        });
+    </script>
+}
+

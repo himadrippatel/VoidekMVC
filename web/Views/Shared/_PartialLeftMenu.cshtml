@@ -1,0 +1,41 @@
+﻿@model Alliant.Domain.UserSession
+<!-- BEGIN: Main Menu-->
+<div class="main-menu menu-fixed menu-dark menu-accordion menu-shadow" data-scroll-to-active="true">
+    <div class="main-menu-content">
+        <ul class="navigation navigation-main jsAlliant-menu-content" id="main-menu-navigation" data-menu="menu-navigation">
+            @Html.Action("MenuFavorite", "SharedResources", new { area = string.Empty })
+            <li>
+                <a href="@Url.Action("Index","Home",new { area=string.Empty})"><i class="la la-pie-chart"></i><span class="menu-title" data-i18n="Dashboard">Dashboard</span></a>
+
+            </li>
+
+            <li class="nav-item has-sub">
+                <a href="#"><i class="la la-home"></i><span class="menu-title" data-i18n="Dashboard">Home</span>@*<span class="badge badge badge-info badge-pill float-right mr-2">2</span>*@</a>
+                <ul class="menu-content" style="">
+                    @{
+                        if (Model.dtUserActivities["activity_administrator"])
+                        {
+                            <li class="is-shown">
+                                <a class="menu-item" href="@Url.Action("Index", "Default", new { area = Html.AreaAdministrator() })"><i class="la la-adjust"></i>Administrator</a>
+                                <ul class="menu-content jsAlliant-menu-content">
+                                    @Html.Action("Menu", "SharedResources", new { area = Html.AreaAdministrator() })
+                                </ul>
+                            </li>
+                        }
+                        if (Model.dtUserActivities["activity_usermanagement"])
+                        {
+                            <li class=" nav-item">
+                                <a class="menu-item" href="@Url.Action("Index","Default",new { area=Html.AreaUserManagement()})"><i class="la la-user"></i>User Management</a>
+                                <ul class="menu-content jsAlliant-menu-content">
+                                    @Html.Action("Menu", "SharedResources", new { area = Html.AreaUserManagement() })
+                                </ul>
+                            </li>
+                        }
+                    }
+                </ul>
+            </li>
+            @Html.Action("Menu", "SharedResources", new { area = string.Empty })
+        </ul>
+    </div>
+</div>
+<!-- END: Main Menu-->

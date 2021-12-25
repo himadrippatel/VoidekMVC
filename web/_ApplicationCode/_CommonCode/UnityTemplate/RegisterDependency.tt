@@ -1,0 +1,96 @@
+﻿<#@ template language="C#" hostSpecific="true" debug="True" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="EnvDTE" #>
+<#@ import namespace="EnvDTE" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
+<#@ import namespace="System" #>
+<#@ output extension="cs" #>
+<# 
+ IServiceProvider serviceProvider = (IServiceProvider)this.Host;
+ var dte = serviceProvider.GetService(typeof(DTE)) as DTE;  
+ var solutionsPath = Host.ResolveAssemblyReference("$(SolutionDir)"); 
+ var projectItem = dte.Solution.FindProjectItem(Host.TemplateFile);
+ var vsProject = projectItem.ContainingProject; 
+ ProjectItem projItem1 = dte.Solution.FindProjectItem(Host.TemplateFile);
+ Project prj = projItem1.ContainingProject;
+ string outputFileName = prj.Properties.Item("OutputFileName").Value.ToString();
+#>
+using Alliant.Manager;
+using System.Web.Mvc;
+using Unity;
+using Unity.Mvc5;
+
+namespace Alliant
+{
+    public static class UnityConfig_Genration
+    {
+        public static void RegisterComponents()
+        {
+			var container = new UnityContainer();       
+			<#	
+				var lstManager = ListFiles("/Alliant.Manager/","cs", solutionsPath); 
+			#>
+	
+			#region Common Manager
+			<#
+			foreach(string fileName in lstManager)
+			{    
+				#>
+				container.RegisterType<<#=fileName#>, <#=fileName.Replace("I","")#>>();
+				<#
+			}	
+			
+			#>
+			#endregion
+
+			#region Administrator
+			<#
+
+			lstManager = ListFiles("/Alliant.Manager.Administrator/","cs", solutionsPath);
+
+			foreach(string fileName in lstManager)
+	        {       
+				#>
+				container.RegisterType<<#=fileName#>, <#=fileName.Replace("I","")#>>();
+				<#
+	        }
+			
+			#>
+			#endregion
+
+			#region UserManagement
+			<#
+			lstManager = ListFiles("/Alliant.Manager.UserManagement/","cs", solutionsPath);
+			
+			foreach(string fileName in lstManager)
+	        {           
+				#>
+				container.RegisterType<<#=fileName#>, <#=fileName.Replace("I","")#>>();
+				<#
+	        }
+		#>
+		#endregion
+        #region Controller Register here
+           
+        #endregion
+		
+            DependencyResolver.SetResolver(new UnityDependencyResolver(container));
+        }
+    }
+}
+
+<#+
+public List<string> ListFiles(string path, string fileType,string solutionsPath)
+{
+	var root = Host.ResolvePath(solutionsPath);
+	var files=Directory.EnumerateFiles(root + path, "*." + fileType, SearchOption.AllDirectories).Select(x=>Path.GetFileName(x).Replace(".cs","")).Where(x=>x.StartsWith("I")).ToList();
+	//foreach(string fileName in files)
+	//{
+	//WriteLine(string.Format("\t\t\"{0}\",", fileName));
+	//}
+    return files;
+}
+#>

@@ -1,0 +1,35 @@
+﻿@model Alliant.Domain.JobTypes
+@{
+    ViewBag.Title = "JobTypeDropDownDemo";
+}
+
+<h2>JobTypeDropDownDemo</h2>
+<div class="row">
+    <div class="col-md-3">
+        @Html.Action("GetJobTypesDropDown", "Miscellaneous",
+    new
+    {
+        area = "",
+        oDropDownDataModel = new AlliantDropDownDataModel()
+        {
+            ConfigurationOptions = new DropDownConfigurations()
+            {
+                                       //FirstItemDisplayText = "Select Branch",
+
+                                       ControlID = "JobTypeID",
+                HTMLAttributes = new Dictionary<string, object>()
+                {
+                                                      { "class", "form-control jsSelectBox" },
+                                                      { "data-id","1"},
+                                                      { "multiple",""},
+                                                      {"data-allowclear",true },
+                                                      { "data-iscloseonselect",true},
+                                                      {"data-placeholder","Type to search Job Type" },
+
+
+                }
+            }
+        }
+    })
+    </div>
+</div>

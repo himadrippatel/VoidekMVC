@@ -1,0 +1,97 @@
+﻿@model UIContainer<Alliant.Domain.ChildMenu>
+@{
+    ViewBag.Title = "ChildMenus";
+    bool isEdit = Model.dtUserActivities["activity_usermanagement_childmenu_update"];
+    bool isDelete = Model.dtUserActivities["activity_usermanagement_childmenu_delete"];
+}
+@*@section Breadcrumb
+{
+    <div>
+        @ViewBag.Title
+    </div>
+}*@
+<div class="content-body">
+    <section class="horizontal-grid" id="horizontal-grid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">
+                            Search ChildMenus
+                            @if (Model.dtUserActivities["activity_usermanagement_childmenu_insert"])
+                            {
+                             
+                                <a href="@Url.Action("Create","ChildMenu",new { @area=Html.AreaUserManagement()})" onclick="return ajaxAnchorClick(this, function () { $('.jsChildMenuCollapse').trigger('click'); })" data-ajaxdivid="ChildMenuForm">
+                                    <i class="la la-plus"></i> Create ChildMenu
+                                </a>
+
+
+                                <a href="@Url.Action("Sequence","ChildMenu",new { @area=Html.AreaUserManagement()})" onclick="return ajaxAnchorClick(this, function () { $('.jsChildMenuCollapse').trigger('click'); })" data-ajaxdivid="ChildMenuForm">
+                                    <i class="ft ft-list"></i> Sequence
+                                </a>
+                            }
+                        </h4>
+                        <a class="heading-elements-toggle"><i class="ft-align-justify font-medium-3"></i></a>
+                        <div class="heading-elements">
+                            <ul class="list-inline mb-0">
+                                <li><a data-action="collapse" class="jsChildMenuCollapse"><i class="ft-minus"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        @using (Html.BeginForm())
+                        {
+                            if (Model.dtUserActivities["activity_usermanagement_childmenu_search"])
+                            {
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        
+                                            @(Html.Kendo().Grid<Alliant.Domain.ChildMenu>()
+                                     .HtmlAttributes(new { @class = "table-responsive" })
+                                                                                        .Name("ChildMenuGrid")
+                                                                                        .NoRecords("No record found.")
+                                                                                        .Columns(columns =>
+                                                                                        {
+                                                                                        columns.Template(@<text></text>)
+                    .HeaderTemplate("Action").Visible(isDelete || isEdit)
+                   // .ClientTemplate("<a href='" + Url.Action("Edit", "ChildMenu", new { area = Html.AreaUserManagement() }) + "/#=SubMenuID#' onclick='return ajaxAnchorClick(this)' data-ajaxdivid='ChildMenuForm'><i class='la la-edit'></i></a>&nbsp;<a href='" + Url.Action("DeletePost", "ChildMenu", new { area = Html.AreaUserManagement() }) + "/#=SubMenuID#' onclick='return ajaxSweetAlert(this)'><i class='la la-remove'></i></a>");
+                    .ClientTemplate((isEdit ? "<a href='" + Url.Action("Edit", "ChildMenu", new { area = Html.AreaUserManagement() }) + "/#=SubMenuID#' onclick='return ajaxAnchorClick(this)' data-ajaxdivid='ChildMenuForm'><i class='la la-edit'></i></a>" : "") + (isDelete ? "&nbsp;<a href='" + Url.Action("DeletePost", "ChildMenu", new { area = Html.AreaUserManagement() }) + "/#=SubMenuID#' onclick='return ajaxSweetAlert(this)'><i class='la la-remove'></i></a>" : "")); columns.Bound(c => c.LinkText).Encoded(false);
+                                                                                            columns.Bound(c => c.ControllerName);
+                                                                                            columns.Bound(c => c.ActionName);
+                                                                                            columns.Bound(c => c.Description);
+                                                                                            columns.Bound(c => c.IsActive);
+                                                                                            columns.Bound(c => c.ActivityName);
+                                                                                            columns.Bound(c => c.CreatedOn).Format("{0:dd-MM-yyyy hh:mm:ss}");
+                                                                                            columns.Bound(c => c.UpdatedOn).Format("{0:dd-MM-yyyy hh:mm:ss}");
+                                                                                        })
+ .Pageable(p =>
+                                   {
+                                       p.PreviousNext(false);
+                                       p.Numeric(false);
+                                   })
+.Filterable()
+.Scrollable(sc => sc.Endless(true))
+.Sortable()
+.Scrollable(s => s.Height(550))
+.DataSource
+(dataSource => dataSource
+.Ajax()
+.PageSize(Constant.KendoDefaultPageSize)
+.Read(read => read.Action("GetChildMenuBySearch", "ChildMenu", new { area = Html.AreaUserManagement() }))
+.ServerOperation(true)
+.Model(ChildMenu => ChildMenu.Id(x => x.SubMenuID))
+)
+                                            )                                       
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="ChildMenuForm" class="ChildMenuForm">
+
+        </div>
+    </section>
+</div>

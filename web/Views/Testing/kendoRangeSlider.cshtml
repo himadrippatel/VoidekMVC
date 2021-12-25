@@ -1,0 +1,173 @@
+@{
+    ViewBag.Title = "kendoRangeSlider";
+}
+
+<div class="row">
+    <div class="col-md-12">
+
+        <div id="grid">
+        </div>
+        <script>
+            $(document).ready(function () {
+                $("#grid").kendoGrid({
+                    filterMenuInit: onFilterMenuInit,
+                    dataSource: {
+                        type: "odata",
+                        transport: {
+                            read: "https://demos.telerik.com/kendo-ui/service/Northwind.svc/Orders"
+                        },
+                        schema: {
+                            model: {
+                                fields: {
+                                    OrderID: { type: "number" },
+                                    Freight: { type: "number" },
+                                    ShipName: { type: "string" },
+                                    OrderDate: { type: "date" },
+                                    ShipCity: { type: "string" }
+                                }
+                            }
+                        },
+                        pageSize: 20,
+                        serverPaging: true,
+                        serverFiltering: true,
+                    },
+                    height: 550,
+                    filterable: true,
+                    pageable: true,
+                    columns:
+                        [{
+                            field: "OrderID"
+                        },
+                        {
+                            field: "ShipName",
+                            title: "Ship Name"
+                        }, {
+                            field: "Freight",
+
+                        }, {
+                            field: "OrderDate",
+                            title: "Order Date",
+                            format: "{0:MM/dd/yyyy}"
+                        }]
+                });
+            });
+
+            function onFilterMenuInit(e) {
+
+                if (e.field == 'Freight') {
+                    $(e.container[0]).html(`
+                 <input class="sliderValue" data-index="0"/>
+                                    <input class="sliderValue" data-index="1"/>
+                    <div id="rangeslider" class="humidity">
+                        <input  />
+                        <input  />
+                    </div>
+                     `)
+
+                    $('#rangeslider').kendoRangeSlider({
+                        change: submitFilterKedno_1,
+                        min: 0,
+                        max: 100,
+                        smallStep: 1,
+                        largeStep: 10,
+                        tickPlacement: "both",
+                        slide: function (e)
+                        {
+                            for (var j = 0; j < e.values.length; j++) {
+                                $("input.sliderValue[data-index=" + j + "]").val(e.values[j]);
+                            }
+                        }
+
+                    })
+
+                    $("input.sliderValue").change(function ()
+                    {
+                        $("#rangeslider").kendoRangeSlider("values", $(".sliderValue[data-index='0']").val(), $(".sliderValue[data-index='1']").val());
+                        AlliantFilterKedno(CurrentGrid(), parseInt($(".sliderValue[data-index='0']").val()), parseInt($(".sliderValue[data-index='1']").val()));
+                    });
+
+                    //$("input.sliderValue").change(function () {
+                    //    try {
+                    //        //debugger;
+                    //        var slider = $("#rangeslider").data("kendoRangeSlider");
+                    //        var $this = $(this);
+                    //        $("#rangeslider").kendoRangeSlider("values", $this.data("index"), $this.val());
+                    //        //AlliantFilterKedno(grid, 10, 200);
+                    //        slider._events.change[0]($this,true);
+                    //        //console.log(slider);
+                    //    } catch (e) {
+                    //        console.log(e);
+                    //    }
+                    //});
+
+                }
+            }
+
+            ////Current way
+            //function submitFilter(e, isCustome) {
+            //    console.log(isCustome);
+            //    console.log(e);
+            //    //alert('call');
+            //    var grid = $('#grid').data('kendoGrid');
+            //    if (isCustome) {
+            //        grid.dataSource.filter({
+            //            logic: 'and',
+            //            filters: [
+            //                { field: 'Freight', operator: 'gte', value: parseInt($(".sliderValue[data-index='0']").val()) },
+            //                { field: 'Freight', operator: 'lte', value: $("#rangeslider").data("kendoRangeSlider").options.max }
+            //            ]
+            //        })
+            //    }
+            //    else {
+            //        grid.dataSource.filter({
+            //            logic: 'and',
+            //            filters: [
+            //                { field: 'Freight', operator: 'gte', value: e.values[0] },
+            //                { field: 'Freight', operator: 'lte', value: e.values[1] }
+            //            ]
+            //        })
+            //    }
+            //}
+
+
+            ////kendo functionlity
+            //function submitFilterKedno(e) {
+            //    var grid = $('#grid').data('kendoGrid');
+            //    grid.dataSource.filter({
+            //        logic: 'and',
+            //        filters: [
+            //            { field: 'Freight', operator: 'gte', value: e.values[0] },
+            //            { field: 'Freight', operator: 'lte', value: e.values[1] }
+            //        ]
+            //    })
+            //}
+
+
+            ///*Best way
+            // 1) Create default method for this
+            // */
+
+            function AlliantFilterKedno(grid,min,max) {
+                grid.dataSource.filter({
+                    logic: 'and',
+                    filters: [
+                        { field: 'Freight', operator: 'gte', value: min },
+                        { field: 'Freight', operator: 'lte', value: max }
+                    ]
+                })
+            }
+
+            function submitFilterKedno_1(e) {
+                AlliantFilterKedno(CurrentGrid(), e.values[0], e.values[1]);
+            }
+
+            function CurrentGrid() {
+                return $('#grid').data('kendoGrid');
+            }
+
+            ////function submitFilter(e) {
+            ////    submitFilterKedno_1(e);
+            ////}
+        </script>
+    </div>
+</div>

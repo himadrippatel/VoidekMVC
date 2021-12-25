@@ -1,0 +1,93 @@
+﻿@model Alliant.Domain.Permission
+@{
+    ViewBag.Title = "Permission Create";
+    IDictionary<string, object> oRequired = Html.GetAlliantValidationAttributes(
+            new List<AlliantValidations>() { AlliantValidations.Required }
+    );
+}
+<div class="content-body">
+    <section class="horizontal-grid" id="horizontal-grid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Create Permissions</h4>
+                        <a class="heading-elements-toggle"><i class="ft-align-justify font-medium-3"></i></a>
+                        <div class="heading-elements">
+                            <ul class="list-inline mb-0">
+                                <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        @using (Html.BeginForm())
+                        {
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label for="RoleID">Role</label>
+                                    @Html.Action("RoleDropDown", "Role",
+                                    new
+                                    {
+                                        area = Html.AreaUserManagement(),
+                                        oDropDownDataModel = new AlliantDropDownDataModel()
+                                        {
+                                            ConfigurationOptions = new DropDownConfigurations()
+                                            {                                               
+                                                ControlID = "RoleID",
+                                                HTMLAttributes = new Dictionary<string, object>()
+                                                {
+                                                    { "class", "form-control jsSelectBox" },
+                                                }
+                                            }
+                                        }
+                                    })
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label for="ParentID">Parent Permission</label>
+                                    @Html.Action("PermissionDropDown", "Permission",
+                                    new
+                                    {
+                                        area = Html.AreaUserManagement(),
+                                        oDropDownDataModel = new AlliantDropDownDataModel()
+                                        {
+                                            ConfigurationOptions = new DropDownConfigurations()
+                                            {
+
+                                                FirstItemDisplayText = "Select",
+                                                ControlID = "ParentID",
+                                                HTMLAttributes = new Dictionary<string, object>()
+                                                {
+                                                    { "class", "form-control jsSelectBox" },
+                                                }
+                                            }
+                                        }
+                                    })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <label for="Name">Name <span class="red">*</span></label>
+                                    @Html.TextBox("Name", null,new Dictionary<string, object>(oRequired) { { "class","form-control"} })
+                                    @Html.AlliantValidationMessage("Name")
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <label for="IsActive">IsActive @Html.CheckBox("IsActive", true)</label>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <div class="text-left">
+                                    <button type="button" class="btn btn-primary" onclick="@Html.PostOnlyAjaxCall("this",Url.Action("CreatePost","Permission",new { area=Html.AreaUserManagement()}),"POST",pReturnFunction:"function(data){$('#PermissionGrid').data('kendoGrid').dataSource.read();$('.jsPermissionCollapse').trigger('click');}")">Save & New <i class="ft-save position-right"></i></button>
+                                    <button type="button" class="btn btn-primary" onclick="@Html.AjaxCall("this",Url.Action("CreatePost","Permission",new { area=Html.AreaUserManagement()}),"POST",pReturnFunction:"function(data){$('#PermissionGrid').data('kendoGrid').dataSource.read();$('#PermissionForm').html('');$('.jsPermissionCollapse').trigger('click');}")">Save <i class="ft-save position-right"></i></button>
+                                    <button type="button" class="btn btn-danger jsRemoveForm" onclick="RemoveAjaxContainer('PermissionForm', function () { $('.jsPermissionCollapse').trigger('click');})">Cancel <i class="la la-times"></i></button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+

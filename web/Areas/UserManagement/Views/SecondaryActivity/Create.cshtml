@@ -1,0 +1,92 @@
+﻿@model Alliant.Domain.SecondaryActivity
+@{
+    ViewBag.Title = "Create Parent Child Permission";
+
+    IDictionary<string, object> oRequired = Html.GetAlliantValidationAttributes(new List<AlliantValidations>()
+{ AlliantValidations.Required});
+}
+<div class="content-body">
+    <section class="horizontal-grid" id="horizontal-grid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Create Parent Child Permission</h4>
+                        <a class="heading-elements-toggle"><i class="ft-align-justify font-medium-3"></i></a>
+                        <div class="heading-elements">
+                            <ul class="list-inline mb-0">
+                                <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        @using (Html.BeginForm())
+                        {
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <label for="ActivityName">Permission <span class="red">*</span></label>
+                                    @*@Html.Partial("AutoComplete",new AlliantAutoCompleteModel() {
+                                        ControlID = "PrimaryActivityID",
+                                        HTMLAttributes= new Dictionary<string, object>(oRequiredWithRegex) { { "class", "jsAutoComplete form-control" } },
+                                        IsCacheData=true,
+                                        IsMultiSelect=false,
+                                        MinLength=3,
+                                        Placeholder= "Type to search activity_name",
+                                        Url = Url.Action("Suggestion", "PrimaryActivity", new { area=Html.AreaUserManagement()}),
+                                        Note = "Usage: Enter three small letter with underscore like e.g activity_name.",
+                                        SelectValue= "id"
+                                    })
+                                    @Html.AlliantValidationMessage("PrimaryActivityID_AutoComplete")*@
+
+                                   @Html.Partial("SelectDropdown", new AlliantSelectDropDownModel() {
+                                  ControlID= "PrimaryActivityID",
+                                  HTMLAttributes=new Dictionary<string, object>(oRequired) { { "class", "jsRemoteSelectBox form-control" } },
+                                  MinLength=3,
+                                  Note= "Usage: Enter three small letter with underscore like e.g activity_name.",
+                                  PageResult=10,
+                                  Url= Url.Action("SearchPrimaryActivity", "PrimaryActivity", new { area = Html.AreaUserManagement() }),
+                                  Placeholder= "Type to search permission",
+                                  IsCloseOnSelect=true,
+                                  AllowClear=true,
+                                  IsDescriptionDisplay=false,
+                                  IsImageDisplay=false,
+                                  ExcludeControlIDValue= "SecondaryActivityIDs"
+                              })
+                                    @Html.AlliantValidationMessage("PrimaryActivityID")
+                                </div>
+                            </div>
+                            <div class="row jsSecondaryActivityRow">
+                                <div class="col-md-12 form-group">
+                                    <label for="SecondaryActivity">Child Permission <span class="red">*</span></label>
+                                    @Html.Partial("SelectDropdown", new AlliantSelectDropDownModel() {
+                                   ControlID= "SecondaryActivityIDs",
+                                   HTMLAttributes=new Dictionary<string, object>(oRequired) { { "class", "jsRemoteSelectBox form-control" } },
+                                   IsMultiSelect=true,
+                                   MinLength=2,
+                                   Note= "Usage: Enter at least two characters to get activity name suggestions. Select a value to continue adding more activity.",
+                                   PageResult=10,
+                                   Url= Url.Action("SearchPrimaryActivity", "PrimaryActivity", new { area = Html.AreaUserManagement() }),
+                                   Placeholder= "Type to search child permission",
+                                   IsCloseOnSelect=false,
+                                   AllowClear=true,
+                                   IsDescriptionDisplay=false,
+                                   IsImageDisplay=false,
+                                   ExcludeControlIDValue= "PrimaryActivityID"
+                               })
+                                    @Html.AlliantValidationMessage("SecondaryActivityIDs")
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <div class="text-left">
+                                    <button type="button" class="btn btn-primary" onclick="@Html.PostOnlyAjaxCall("this",Url.Action("CreatePost","SecondaryActivity",new { area=Html.AreaUserManagement()}),"POST",pReturnFunction:"function(data){$('#SecondaryActivityGrid').data('kendoTreeList').dataSource.read();}")">Save & New <i class="ft-save position-right"></i></button>
+                                    <button type="button" class="btn btn-primary" onclick="@Html.AjaxCall("this",Url.Action("CreatePost","SecondaryActivity",new { area=Html.AreaUserManagement()}),"POST",pReturnFunction:"function(data){$('#SecondaryActivityGrid').data('kendoTreeList').dataSource.read();$('.jsSecondaryActivityCollapse').trigger('click');$('#SecondaryActivityForm').html('');}")">Save <i class="ft-save position-right"></i></button>
+                                    <button type="button" class="btn btn-danger jsRemoveForm" onclick="RemoveAjaxContainer('SecondaryActivityForm', function () { $('.jsSecondaryActivityCollapse').trigger('click');})">Cancel <i class="la la-times"></i></button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

@@ -1,0 +1,75 @@
+﻿@model Alliant.Domain.AreaManagement
+@{
+    ViewBag.Title = "AreaManagement Update";
+    IDictionary<string, object> oRequired = Html.GetAlliantValidationAttributes(
+        new List<AlliantValidations>() { AlliantValidations.Required, AlliantValidations.RegularExpression },
+        new AlliantValidationAdditionalValue() { RegularExpression_CompareExpression = AlliantRegularExpresion.NoSpace }
+    );
+
+    IDictionary<string, object> oRequiredActivity = Html.GetAlliantValidationAttributes(new List<AlliantValidations>()
+{ AlliantValidations.Required,AlliantValidations.RegularExpression }, new AlliantValidationAdditionalValue() { RegularExpression_CompareExpression = AlliantRegularExpresion.SmallChar_UnderScore });
+
+}
+<div class="content-body">
+    <section class="horizontal-grid" id="horizontal-grid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Update AreaManagements</h4>
+                        <a class="heading-elements-toggle"><i class="ft-align-justify font-medium-3"></i></a>
+                        <div class="heading-elements">
+                            <ul class="list-inline mb-0">
+                                <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        @using (Html.BeginForm())
+                        {
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <label for="Name">Name <span class="red">*</span></label>               
+                                    @Html.Hidden("CreatedOn", Model.CreatedOn, new { @class = "jsIgnore" })
+                                    @Html.Hidden("AreaID", Model.AreaID, new { @class = "form-control" })
+                                    @Html.TextBox("Name", Model.Name, new Dictionary<string, object>(oRequired) { { "class", "form-control" } })
+                                    @Html.AlliantValidationMessage("Name")
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <label for="ActivityName_AutoComplete">ActivityName <span class="red">*</span></label>
+                                    @Html.Partial("AutoComplete",new AlliantAutoCompleteModel() {
+                                   ControlID = "ActivityName",
+                                   HTMLAttributes= new Dictionary<string, object>(oRequiredActivity) { { "class", "jsAutoComplete form-control" } },
+                                   IsCacheData=true,
+                                   IsMultiSelect=false,
+                                   MinLength=3,
+                                   Placeholder= "Type to search activity_name",
+                                   Url = Url.Action("Suggestion", "PrimaryActivity", new { area=Html.AreaUserManagement()}),
+                                   Note = "Usage: Enter three small letter with underscore like e.g activity_name.",
+                                   SelectValue= "value",
+                                   SelectedValue=Model.ActivityName                                   
+                               })
+                                @Html.AlliantValidationMessage("ActivityName_AutoComplete")
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <label for="IsActive">IsActive @Html.CheckBox("IsActive", Model.IsActive)</label>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <div class="text-left">
+                                    <button type="button" class="btn btn-primary" onclick="@Html.AjaxCall("this",Url.Action("EditPost","AreaManagement",new { area=Html.AreaUserManagement()}),"POST",pReturnFunction:"function(data){$('#AreaManagementGrid').data('kendoGrid').dataSource.read();$('#AreaManagementForm').html('');}")">Save <i class="ft-save position-right"></i></button>
+                                    <button type="button" class="btn btn-danger jsRemoveForm" onclick="RemoveAjaxContainer('AreaManagementForm')">Cancel <i class="la la-times"></i></button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+

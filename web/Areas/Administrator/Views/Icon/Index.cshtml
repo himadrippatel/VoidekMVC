@@ -1,0 +1,73 @@
+﻿@{
+    ViewBag.Title = "Icon";
+}
+
+<div class="content-body">
+    <section class="horizontal-grid" id="horizontal-grid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">
+                            Search Icons
+                            <a href="@Url.Action("Create","Icon",new { @area=Html.AreaAdministrator()})" onclick="return ajaxAnchorClick(this, function () { $('.jsIconCollapse').trigger('click'); })" data-ajaxdivid="IconFrom">
+                                <i class="la la-plus"></i> Create Icon
+                            </a>
+                        </h4>
+                        <a class="heading-elements-toggle"><i class="ft-align-justify font-medium-3"></i></a>
+                        <div class="heading-elements">
+                            <ul class="list-inline mb-0">
+                                <li><a data-action="collapse" class="jsIconCollapse"><i class="ft-minus"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        @using (Html.BeginForm())
+                        {
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="table-responsive">
+                                        @(Html.Kendo().Grid<Alliant.Domain.Icon>()
+                                .Name("IconGrid")
+                                .NoRecords("No record found.")
+                                .Columns(columns =>
+                                {
+                                columns.Template(@<text></text>)
+    .HeaderTemplate("Action")
+    .ClientTemplate("<a href='" + Url.Action("Edit", "Icon", new { area = Html.AreaAdministrator() }) + "/#=IconID#' onclick='return ajaxAnchorClick(this,function () { $(\".jsIconCollapse\").trigger(\"click\"); })' data-ajaxdivid='IconFrom'><i class='la la-edit'></i></a>&nbsp;<a href='" + Url.Action("DeletePost", "Icon", new { area = Html.AreaAdministrator() }) + "/#=IconID#' onclick='return ajaxSweetAlert(this)'><i class='la la-remove'></i></a>");
+                                    columns.Bound(x => x.IconName);
+                                    columns.Bound(x => x.ICon).Encoded(false);
+                                    columns.Bound(x => x.IsActive);
+                                })
+                                   .Pageable(p =>
+                                   {
+                                       p.PreviousNext(false);
+                                       p.Numeric(false);
+                                   })
+                                 
+                                            .Filterable()
+                                            .Sortable()
+                                            .Scrollable(sc => sc.Endless(true))
+                                            .Scrollable(s => s.Height(550))
+                                            .DataSource
+                                            (dataSource => dataSource
+                                            .Ajax()
+                                            .PageSize(Constant.KendoDefaultPageSize)
+                                            .Read(read => read.Action("GetIconBySearch", "Icon", new { area = Html.AreaAdministrator() }))
+                                            .ServerOperation(true)
+                                            .Model(Icon => Icon.Id(x => x.IconID))
+                                            ))
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="IconFrom" class="IconFrom">
+
+        </div>
+    </section>
+</div>
+

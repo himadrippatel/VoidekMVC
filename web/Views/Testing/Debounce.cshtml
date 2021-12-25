@@ -1,0 +1,54 @@
+﻿
+@{
+    ViewBag.Title = "Debounce";
+}
+@section CSSSection
+{
+    <style>
+        .num {
+            width: 20px;
+        }
+
+        #n2 {
+            margin-left: 50px;
+        }
+    </style>
+}
+<div class="row">
+    <div class="col-md-12">
+        <input type="text" />
+        <input type="text" id="n2" class="num" value="17" disabled />
+        <input type="text" id="n3" class="num" value="32" disabled />
+
+    </div>
+</div>
+@section JSSection{
+<script>
+$('input').keyup(debounce(function(){
+        var $this=$(this);
+        //alert( $this.val() );
+        var n1 = $this.val();
+        var n2 = $('#n2').val();
+        var n3 = $('#n3').val();
+        var calc = n1 * n2 * n3;
+        alert(calc);
+    },1000));
+
+
+function debounce(func, wait, immediate) {
+	let timeout;
+	return function() {
+        let context = this, args = arguments;
+        let later = function() {
+			timeout = null;
+			if (!immediate) func.apply(context, args);
+		};
+        let callNow = immediate && !timeout;
+		clearTimeout(timeout);
+		timeout = setTimeout(later, wait);
+		if (callNow) func.apply(context, args);
+	};
+};
+    </script>
+}
+

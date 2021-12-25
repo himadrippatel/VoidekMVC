@@ -1,0 +1,83 @@
+﻿@model UIContainer<Alliant.Domain.PrimaryActivity>
+@{
+    ViewBag.Title = "Permission";
+    bool IsDelete = Model.dtUserActivities["activity_usermanagement_primaryactivity_delete"];
+}
+<div class="content-body">
+    <section class="horizontal-grid" id="horizontal-grid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">
+                            Search Permissions
+                            @if (Model.dtUserActivities["activity_usermanagement_primaryactivity_insert"])
+                            {
+                            <a href="@Url.Action("Create","PrimaryActivity",new { @area=Html.AreaUserManagement()})" onclick="return ajaxAnchorClick(this, function () { $('.jsPrimaryActivityCollapse').trigger('click'); })" data-ajaxdivid="PrimaryActivityForm">
+
+                                <i class="la la-plus"></i> Create Permission
+                            </a>
+                            }
+                        </h4>
+                        <a class="heading-elements-toggle"><i class="ft-align-justify font-medium-3"></i></a>
+                        <div class="heading-elements">
+                            <ul class="list-inline mb-0">
+                                <li><a data-action="collapse" class="jsPrimaryActivityCollapse" ><i class="ft-minus"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        @using (Html.BeginForm())
+                        {
+                            if (Model.dtUserActivities["activity_usermanagement_primaryactivity_search"])
+                            {
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="table-responsive">
+                                            @(Html.Kendo().Grid<Alliant.Domain.PrimaryActivity>()
+                                                .Name("PrimaryActivityGrid")
+                                                .NoRecords("No record found.")
+                                                .Columns(columns =>
+                                                {
+                                                columns.Template(@<text></text>)
+.HeaderTemplate("Action").Visible(IsDelete)
+//.ClientTemplate("<a href='" + Url.Action("DeletePost", "PrimaryActivity", new { area = Html.AreaUserManagement() }) + "/#=PrimaryActivityID#' onclick='return ajaxSweetAlert(this)'><i class='la la-remove'></i></a>");
+.ClientTemplate(IsDelete ? "<a href='" + Url.Action("DeletePost", "PrimaryActivity", new { area = Html.AreaUserManagement() }) + "/#=PrimaryActivityID#' onclick='return ajaxSweetAlert(this)'><i class='la la-remove'></i></a>" : "");
+                                                    columns.Bound(c => c.ActivityName).HeaderTemplate("Permission");
+                                                    columns.Bound(c => c.IsActive);
+                                                    columns.Bound(c => c.CreatedOn).Format("{0:dd-MM-yyyy hh:mm:ss}");
+                                                })
+ .Pageable(p =>
+                                   {
+                                       p.PreviousNext(false);
+                                       p.Numeric(false);
+                                   })
+.Filterable()
+.Scrollable(sc => sc.Endless(true))
+.Scrollable(s => s.Height(550))
+.Sortable()
+.DataSource
+(dataSource => dataSource
+.Ajax()
+.PageSize(Constant.KendoDefaultPageSize)
+.Read(read => read.Action("GetPrimaryActivityBySearch", "PrimaryActivity", new { area = Html.AreaUserManagement() }))
+.ServerOperation(true)
+.Model(PrimaryActivity => PrimaryActivity.Id(x => x.PrimaryActivityID))
+)
+                                            )
+
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        </div>
+                </div>
+            </div>
+        </div>
+        <div id="PrimaryActivityForm" class="PrimaryActivityForm">
+
+        </div>       
+    </section>
+</div>
+

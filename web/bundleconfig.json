@@ -1,0 +1,88 @@
+[
+  {
+    "outputFileName": "Content/AlliantKendo.css",
+    "inputFiles": [
+      "Kendo/styles/kendo.common.min.css",
+      "Kendo/styles/kendo.default.min.css"
+    ],
+    "minify": {
+      "enabled": true,
+      "commentMode": "all"
+    }
+  },
+  {
+    "outputFileName": "Content/Alliant.css",
+    "inputFiles": [
+      "Content/css/vendors.min.css",
+      "Content/css/ui/jquery-ui.min.css",
+      "Content/css/forms/icheck/icheck.css" /*check and remove*/,
+      "Content/css/forms/icheck/custom.css" /*check and remove*/,
+      "Content/css/bootstrap.css",
+      "Content/css/bootstrap-extended.css",
+      "Content/css/colors.css",
+      "Content/css/components.css",
+      "Content/css/core/menu/menu-types/vertical-menu-modern.css",
+      "Content/css/core/colors/palette-gradient.css",
+      "Content/css/extensions/sweetalert2.min.css",
+      "Content/css/plugins/loaders/loaders.min.css",
+      "Content/css/forms/selects/select2.min.css",
+      "Content/css/plugins/ui/jqueryui.min.css",
+      "Content/css/extensions/bootstrap-treeview.min.css" /*check and remove*/,
+      "Content/css/jstree/jstree.min.css",
+      "Content/css/pickers/daterange/daterangepicker.css",
+      "Content/css/plugins/extensions/noui-slider.min.css" /*check and remove*/,
+      "Content/css/core/colors/palette-noui.min.css" /*check and remove*/,      
+      "Content/css/fileUpload/jquery.fileupload-ui.css",
+      "Content/css/style.css"
+    ],
+    "minify": {
+      "enabled": true,
+      "commentMode": "all"
+    }
+  },
+  {
+    "outputFileName": "Scripts/Alliant.js",
+    "inputFiles": [
+      "Scripts/js/pickers/dateTime/moment-with-locales.min.js",
+      "Scripts/js/pickers/daterange/daterangepicker.js",
+      "Scripts/jquery-ui.min.js",
+      "Scripts/js/core/app-menu.js",
+      "Scripts/js/core/app.js",
+      "Scripts/js/core/customizer.js",
+      "Scripts/jquery.validate.min.js",
+      "Scripts/jquery.validate.unobtrusive.min.js",
+      "Scripts/jquery.tmpl.min.js",
+      "Scripts/js/extensions/sweetalert2.all.min.js",
+      "Scripts/js/forms/select/select2.full.min.js",
+      "Scripts/js/extensions/bootstrap-treeview.min.js" /*check and remove*/,
+      "Scripts/js/jstree/jstree.min.js",
+      "Scripts/js/extensions/nouislider.min.js" /*check and remove*/,
+      "Scripts/js/fileUpload/tmpl.min.js",
+      "Scripts/js/fileUpload/canvas-to-blob.min.js",
+      "Scripts/js/fileUpload/load-image.min.js",
+      "Scripts/js/fileUpload/jquery.fileupload.js",
+      "Scripts/js/fileUpload/jquery.fileupload-ui.js",
+      "Scripts/Comman.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "commentMode": "all"
+    }
+  },
+
+  {
+    "outputFileName": "Scripts/AlliantKendo.js",
+    "inputFiles": [
+      "Scripts/jquery.min.js",
+      "Scripts/js/vendors.min.js",
+      "Kendo/js/jszip.min.js",
+      "Kendo/js/kendo.all.min.js",
+      "Kendo/js/kendo.aspnetmvc.min.js",
+      "Kendo/js/jszip.min.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "commentMode": "all"
+    }
+  }
+]

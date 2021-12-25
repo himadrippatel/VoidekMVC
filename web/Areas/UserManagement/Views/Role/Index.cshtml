@@ -1,0 +1,84 @@
+﻿@model UIContainer<Alliant.Domain.Role>
+@{
+    ViewBag.Title = "Roles";
+    bool IsEdit = Model.dtUserActivities["activity_usermanagement_role_update"];
+    bool IsDelete = Model.dtUserActivities["activity_usermanagement_role_delete"];
+
+}
+<div class="content-body">
+    <section class="horizontal-grid" id="horizontal-grid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">
+                            Search Roles
+                            @if (Model.dtUserActivities["activity_usermanagement_role_insert"])
+                            {                               
+                                <a href="@Url.Action("Create","Role",new { @area=Html.AreaUserManagement()})" onclick="return ajaxAnchorClick(this, function () { $('.jsRoleCollapse').trigger('click'); })" data-ajaxdivid="RoleForm">
+                                    <i class="la la-plus"></i> Create Role
+                                </a>
+                            }
+                        </h4>
+                        <a class="heading-elements-toggle"><i class="ft-align-justify font-medium-3"></i></a>
+                        <div class="heading-elements">
+                            <ul class="list-inline mb-0">
+                                <li><a data-action="collapse"  class="jsRoleCollapse"><i class="ft-minus"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        @using (Html.BeginForm())
+                        {
+                            if (Model.dtUserActivities["activity_usermanagement_role_search"])
+                            {
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="table-responsive">
+                                            @(Html.Kendo().Grid<Alliant.Domain.Role>()
+                                                                    .Name("RoleGrid")
+                                                                    .NoRecords("No record found.")
+                                                                    .Columns(columns =>
+                                                                    {
+                                                                        columns.Template(@<text></text>).Visible((IsDelete || IsEdit))
+                                            .HeaderTemplate("Action")
+                                            .ClientTemplate((IsEdit ? "<a href='" + Url.Action("Edit", "Role", new { area = Html.AreaUserManagement() }) + "/#=RoleID#' onclick='return ajaxAnchorClick(this)' data-ajaxdivid='RoleForm'><i class='la la-edit'></i></a>" : "") + (IsDelete ? " &nbsp;<a href='" + Url.Action("DeletePost", "Role", new { area = Html.AreaUserManagement() }) + "/#=RoleID#' onclick='return ajaxSweetAlert(this)'><i class='la la-remove'></i></a>" : ""));
+                                                              //  columns.Bound(c => c.ParentName);
+                                                    columns.Bound(c => c.Name);
+                                                    columns.Bound(c => c.IsActive);
+                                                                    //columns.Bound(c => c.CreatedOn).Format("{0:dd-MM-yyyy hh:mm:ss}");
+                                                                    //columns.Bound(c => c.UpdatedOn).Format("{0:dd-MM-yyyy hh:mm:ss}");
+                                                                })
+                                                 .Pageable(p =>
+                                   {
+                                       p.PreviousNext(false);
+                                       p.Numeric(false);
+                                   })
+                                                .Filterable()
+                                                .Scrollable(sc => sc.Endless(true))
+                                                .Sortable()
+                                                .Scrollable(s => s.Height(550))
+                                                .DataSource
+                                                (dataSource => dataSource
+                                                .Ajax()
+                                                //.Group(g=>g.Add(p=>p.ParentName))
+                                                .PageSize(Constant.KendoDefaultPageSize)
+                                                .Read(read => read.Action("Grid", "Role", new { area = Html.AreaUserManagement() }))
+                                                .ServerOperation(true)
+                                                .Model(Role => Role.Id(x => x.RoleID))
+                                                )
+                                            )
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="RoleForm" class="RoleForm">
+
+        </div>
+    </section>
+</div>

@@ -1,0 +1,67 @@
+﻿@using Alliant.ViewModel
+@model List<RoleTemplate>
+@{
+    Layout = null;
+}
+<div class="jsRoleTemplate" id="jsRoleTemplate">
+    @{
+        if (Model == null || Model?.Count() == 0)
+        {
+            @Html.Partial("_NotFound")
+        }
+        else
+        {
+            <ul class="row p-1">
+                <li class="col-md-12 px-2">
+                    <h6 class="font-weight-bold font-medium-2">Roles</h6>
+                    @foreach (var roleTemplate in Model)
+                    {
+                        <p class="m-0">@roleTemplate.Name</p>
+                        <ul class="row mt-2">
+                            <li class="col-6 col-xl-2" style="text-align:center;">
+                                <a href="../ecommerce-menu-template" target="_blank">
+                                    <i class="la la-shopping-cart font-large-1"></i>
+                                    <p class="font-medium-2">Quotes</p>
+                                </a>
+                            </li>
+                            <li class="col-6 col-xl-2" style="text-align:center;">
+                                <a href="../travel-menu-template" target="_blank">
+                                    <i class="la la-plane font-large-1 "></i>
+                                    <p class="font-medium-2">Contracts</p>
+                                </a>
+                            </li>
+                            <li class="col-6 col-xl-2" style="text-align:center;">
+                                <a href="../hospital-menu-template" target="_blank">
+                                    <i class="la la-stethoscope font-large-1 "></i>
+                                    <p class="font-medium-2 ">Invoices</p>
+                                </a>
+                            </li>
+                            <li class="col-6 col-xl-2" style="text-align:center;">
+                                <a href="../crypto-menu-template" target="_blank">
+                                    <i class="la la-bitcoin font-large-1 "></i>
+                                    <p class="font-medium-2">Credit Memo</p>
+                                </a>
+                            </li>
+                            <li class="col-6 col-xl-2" style="text-align:center;">
+                                <a href="../support-menu-template" target="_blank">
+                                    <i class="la la-tag font-large-1 "></i>
+                                    <p class="font-medium-2">Payments</p>
+                                </a>
+                            </li>
+                            <li class="col-6 col-xl-2" style="text-align:center;">
+                                <a href="../bank-menu-template" target="_blank">
+                                    <i class="la la-bank font-large-1 "></i>
+                                    <p class="font-medium-2">PO</p>
+                                </a>
+                            </li>
+                        </ul>
+                        if (Model.Count > 1)
+                        {
+                            <hr />
+                        }
+                    }
+                </li>
+            </ul>
+        }
+    }
+</div>

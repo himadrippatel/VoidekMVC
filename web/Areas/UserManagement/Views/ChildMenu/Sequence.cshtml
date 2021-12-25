@@ -1,0 +1,95 @@
+﻿@{
+    ViewBag.Title = "Sequence";
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">
+                   Update Sequence Child Menus
+                </h4>
+                <a class="heading-elements-toggle"><i class="ft-align-justify font-medium-3"></i></a>
+                <div class="heading-elements">
+                    <ul class="list-inline mb-0">
+                        <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-body">
+                @using (Html.BeginForm())
+                {
+                <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label for="AreaID">Area Name</label>
+                        @Html.Action("AreaManagementDropDwon", "AreaManagement",
+                        new
+                        {
+                            area = Html.AreaUserManagement(),
+                            oDropDownDataModel = new AlliantDropDownDataModel()
+                            {
+                                ConfigurationOptions = new DropDownConfigurations()
+                                {
+                                    FirstItemDisplayText="Select",
+                                    ControlID = "AreaID",
+                                    HTMLAttributes = new Dictionary<string, object>()
+                                    {
+                                        { "class", "form-control" },
+                                        { "onchange", Html.DropDownData("this", Url.Action("MenuJsonDropDown", "Menu"), "MenuID" ) }
+                                    }
+                                }
+                            }
+                        })
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label for="MenuID">Menu Name</label>
+                        @Html.AlliantPartial("DropDown",
+                        new AlliantDropDownDataModel
+                        {
+                            Model = new List<string>(),
+                            ConfigurationOptions = new DropDownConfigurations()
+                            {
+                                FirstItemDisplayText = "Select",
+                                ControlID = "MenuID",
+                                HTMLAttributes = new Dictionary<string, object>()
+                                {
+                                    { "class", "form-control" },
+                                    { "onchange","AlliantAjaxCall('GET','"+Url.Action("SequenceChildMenu","ChildMenu",new{ area=Html.AreaUserManagement()})+"',{MenuID:$(this).val()},function(oHtml){$('.jsSequenceChildMenu').html(oHtml);})"}
+                                }
+                            }
+                        })
+                    </div>
+                </div>
+                    <div class="jsSequenceChildMenu">
+
+                    </div>
+                    <div class="form-actions">
+                        <div class="text-left">
+                            @*<button type="button" class="btn btn-primary" onclick="@Html.AjaxCall("this",Url.Action("UpdateSequence","ChildMenu",new { area=Html.AreaUserManagement()}),"POST",pReturnFunction:"function(data){$('#ChildMenuGrid').data('kendoGrid').dataSource.read();$('#ChildMenuForm').html('');}")">Save <i class="ft-save position-right"></i></button>*@
+                            <button type="button" class="btn btn-primary" onclick="UpdateChildMenu(this)">Save <i class="ft-save position-right"></i></button>
+                            <button type="button" class="btn btn-danger jsRemoveForm"  onclick="$('#ChildMenuForm').html('');">Cancel <i class="la la-times"></i></button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+@section JSSection
+{
+    <script>
+        function UpdateChildMenu(elem)
+        {
+            var idsInOrder = $("#sortable").sortable("toArray");            
+            for (var i = 0; i < idsInOrder.length; i++)
+            {               
+                $(".jsSequance[data-id='" + idsInOrder[i] + "']").val(i);
+            }
+            AjaxCall(elem, '@Url.Action("UpdateSequence","ChildMenu",new { area=Html.AreaUserManagement()})', 'POST', true, null, null, null,
+                function (data)
+                {              
+                    $('#ChildMenuGrid').data('kendoGrid').dataSource.read(); $('#ChildMenuForm').html('');
+                }
+            );
+        }
+    </script>
+}

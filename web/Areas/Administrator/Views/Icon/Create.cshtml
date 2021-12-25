@@ -1,0 +1,54 @@
+﻿@model Alliant.Domain.Icon
+@{
+    ViewBag.Title = "Create Icon";
+    IDictionary<string, object> oRequired = Html.GetAlliantValidationAttributes(new List<AlliantValidations>() { AlliantValidations.Required });
+}
+<div class="content-body">
+    <section class="horizontal-grid" id="horizontal-grid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Create Icon</h4>
+                        <a class="heading-elements-toggle"><i class="ft-align-justify font-medium-3"></i></a>
+                        <div class="heading-elements">
+                            <ul class="list-inline mb-0">
+                                <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        @using (Html.BeginForm())
+                        {
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label for="ICon">Icon <span class="red">*</span></label>
+                                    @Html.TextBox("ICon", null, new Dictionary<string, object>(oRequired) { { "class", "form-control" } })
+                                    @Html.AlliantValidationMessage("ICon")
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label for="IconName">Icon Name <span class="red">*</span></label>
+                                    @Html.TextBox("IconName", null, new Dictionary<string, object>(oRequired) { { "class", "form-control" } })
+                                    @Html.AlliantValidationMessage("IconName")
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <label>@Html.CheckBox("IsActive", true) IsActive</label>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <div class="text-left">
+                                    <button type="button" class="btn btn-primary" onclick="@Html.PostOnlyAjaxCall("this",Url.Action("CreatePost","Icon",new { area=Html.AreaAdministrator()}),"POST",pReturnFunction:"function(data){$('#IconGrid').data('kendoGrid').dataSource.read();}")">Save & New <i class="ft-save position-right"></i></button>
+                                    <button type="button" class="btn btn-primary" onclick="@Html.AjaxCall("this",Url.Action("CreatePost","Icon",new { area=Html.AreaAdministrator()}),"POST",pReturnFunction:"function(data){$('#IconGrid').data('kendoGrid').dataSource.read();RemoveAjaxContainer('IconFrom', function () { $('.jsIconCollapse').trigger('click'); })}")">Save <i class="ft-save position-right"></i></button>
+                                    <button type="button" class="btn btn-danger" onclick="RemoveAjaxContainer('IconFrom', function () { $('.jsIconCollapse').trigger('click'); })">Cancel <i class="la la-times"></i></button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+

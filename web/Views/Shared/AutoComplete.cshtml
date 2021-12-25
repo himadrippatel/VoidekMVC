@@ -1,0 +1,20 @@
+﻿@model AlliantAutoCompleteModel
+@{
+    Layout = null;
+    IDictionary<string, object> HtmlAttributes = (Model.HTMLAttributes ?? new Dictionary<string, object>()) as IDictionary<string, object>;
+    HtmlAttributes.Add("data-minlength", Model.MinLength);
+    HtmlAttributes.Add("data-url", Model.Url);
+    HtmlAttributes.Add("placeholder", Model.Placeholder);
+    HtmlAttributes.Add("data-iscache", Model.IsCacheData);
+    HtmlAttributes.Add("data-target", Model.ViewModelID ?? Model.ControlID);
+    HtmlAttributes.Add("data-select", Model.SelectValue ?? "id");
+}
+
+@Html.TextBox(string.Concat(Model.ControlID, "_AutoComplete"), Model.SelectedValue, HtmlAttributes)
+@Html.Hidden(Model.ControlID,Model.SelectedValue)
+@if (!string.IsNullOrEmpty(Model.Note))
+{
+    <div>
+        <small>@Model.Note</small>
+    </div>
+}

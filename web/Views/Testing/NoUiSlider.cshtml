@@ -1,0 +1,824 @@
+﻿
+@using Alliant.ViewModel
+
+@{
+    ViewBag.Title = "QuoteDiscountAnalysisTesting";
+}
+
+<div class="content-body">
+    <section class="horizontal-grid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div id="accordionWrap1" role="tablist" aria-multiselectable="true">
+                        <div class="card-header">
+                            <h4 class="card-title"><i class="la la-th-list"></i>Quote Discount Analysis</h4>
+                            <a class="heading-elements-toggle"><i class="ft-align-justify font-medium-3"></i></a>
+                            <div class="heading-elements">
+                                <ul class="list-inline mb-0">
+                                    <li><a data-action="collapse" class="QuoteDiscountAnalysisReportPostCollapse"><i class="ft-minus"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card-body" style="margin-top:-0.7rem;">
+                            @using (Html.BeginForm("QuoteDiscountAnalysisReportPost", "Reports", FormMethod.Post, new { @class = "form form-horizontal", @id = "jsFormQuoteDiscountAnalysisReportPost" }))
+                            {
+                                <div class="form-body">
+                                    <div class="row">
+                                        <div class="col-md-3 form-group">
+                                            @*<label>Date Type</label>*@
+                                            @Html.DropDownList("DateType", new List<SelectListItem>
+                                            {
+                                            new SelectListItem { Text = "Return Date", Value = "ReturnDate" },
+                                            new SelectListItem { Text = "Entered Date", Value = "EnteredDate" }
+                                            }, new { @class = "form-control" })
+
+                                        </div>
+                                        <div class="col-md-3 form-group">
+                                            @Html.Hidden("DeliveryDate_Min")
+                                            @Html.Hidden("DeliveryDate_Max")
+                                            @Html.TextBox("DeliveryDate_Values1", null, new { @class = "jsDateRangePicker form-control", @data_showDropdowns = true, @data_autoApply = false, @data_startdate = DateTime.Now.AddMonths(-1).ToAlliantDate() })
+                                        </div>
+                                        <div class="col-md-3 form-group">
+                                            @*<label>Branch</label>*@
+                                            <div class="input-group">
+                                                @Html.Action("GetBranchDropDown", "Branch",
+                                                new
+                                                {
+                                                    area = "",
+                                                    oDropDownDataModel = new AlliantDropDownDataModel()
+                                                    {
+                                                        ConfigurationOptions = new DropDownConfigurations()
+                                                        {
+                                                            //FirstItemDisplayText = "Select Branch",
+                                                            ControlID = "Branch",
+                                                            HTMLAttributes = new Dictionary<string, object>()
+                                                            {
+                                                                { "class", "form-control jsSelectBox" },
+                                                                { "data-id","1"},
+                                                                //{ "multiple", "" },
+                                                                { "data-allowclear", true },
+                                                                { "data-placeholder","Type to search Branch" }
+                                                            }
+                                                        }
+                                                    }
+                                                })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 form-group">
+                                            @*<label>Sales Rep</label>*@
+                                            <div class="input-group">
+                                                @Html.Action("GetEmployeeDropDown", "Employee",
+                                                new
+                                                {
+                                                    area = "",
+                                                    oDropDownDataModel = new AlliantDropDownDataModel()
+                                                    {
+                                                        ConfigurationOptions = new DropDownConfigurations()
+                                                        {
+                                                            FirstItemDisplayText = "Select SalesRep",
+                                                            ControlID = "SalesRep",
+                                                            HTMLAttributes = new Dictionary<string, object>()
+                                                            {
+                                                               { "class", "form-control jsSelectBox"},
+                                                               { "data-id","2"},
+                                                               //{ "multiple", "" },
+                                                               { "data-allowclear", true },
+                                                               { "data-placeholder","Type to search SalesRep" }
+                                                            }
+                                                        }
+                                                    }
+                                                })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-top:-1rem;">
+                                        <div class="col-md-3">
+                                            @*<label>Show Name</label>*@
+                                            <div class="input-group">
+                                                @*@Html.TextBox("ShowName", null, new { @class = "form-control jsSelectOne", @data_id = "3" })*@
+                                                @Html.Action("GetEmployeeDropDown", "Employee",
+                                                    new
+                                                    {
+                                                        area = "",
+                                                        oDropDownDataModel = new AlliantDropDownDataModel()
+                                                        {
+                                                            ConfigurationOptions = new DropDownConfigurations()
+                                                            {
+                                                                //FirstItemDisplayText = "Select ShowName",
+                                                                ControlID = "ShowName",
+                                                                HTMLAttributes = new Dictionary<string, object>()
+                                                                {
+                                                                    { "class", "form-control jsSelectBox"},
+                                                                    { "data-id","3"},
+                                                                    //{ "multiple", "" },
+                                                                    { "data-allowclear", true },
+                                                                    { "data-placeholder","Type to search ShowName" }
+                                                                }
+                                                            }
+                                                        }
+                                                    })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            @*<label>Project Lead</label>*@
+                                            <div class="input-group">
+                                                @Html.Action("GetEmployeeDropDown", "Employee",
+                                                new
+                                                {
+                                                    area = "",
+                                                    oDropDownDataModel = new AlliantDropDownDataModel()
+                                                    {
+                                                        ConfigurationOptions = new DropDownConfigurations()
+                                                        {
+                                                            //FirstItemDisplayText = "Select ProjectLead",
+                                                            ControlID = "ProjectLead",
+                                                            HTMLAttributes = new Dictionary<string, object>()
+                                                            {
+                                                                { "class", "form-control jsSelectBox"},
+                                                                { "data-id","4"},
+                                                                //{ "multiple", "" },
+                                                                { "data-allowclear", true },
+                                                                { "data-placeholder","Type to search ProjectLead" }
+                                                            }
+                                                        }
+                                                    }
+                                                })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 form-group">
+                                            @*<label>Customer Name</label>*@
+                                            <div class="input-group">
+                                                @*@Html.TextBox("CustName", null, new { @class = "form-control jsSelectOne", @data_id = "5" })*@
+                                                @Html.Action("GetEmployeeDropDown", "Employee",
+                                                    new
+                                                    {
+                                                        area = "",
+                                                        oDropDownDataModel = new AlliantDropDownDataModel()
+                                                        {
+                                                            ConfigurationOptions = new DropDownConfigurations()
+                                                            {
+                                                                //FirstItemDisplayText = "Select ProjectLead",
+                                                                ControlID = "CustName",
+                                                                HTMLAttributes = new Dictionary<string, object>()
+                                                                {
+                                                                    { "class", "form-control jsSelectBox"},
+                                                                    { "data-id","5"},
+                                                                    //{ "multiple", "" },
+                                                                    { "data-allowclear", true },
+                                                                    { "data-placeholder","Type to search CustomerName" }
+                                                                }
+                                                            }
+                                                        }
+                                                    })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 form-grop">
+                                            <div class="form-group display-hidden" id="jsInclude">
+                                                <label style="margin-right:5rem;">@Html.CheckBox("IncludeNA") Include N/A </label>
+                                                <label>@Html.CheckBox("IncludeBlanks") Include Blanks </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-top:-1rem;">
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <h4 class="form-section"><i class="ft ft-type"></i>Status</h4>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class=" col-md-4">
+                                                    @Html.CheckBox("Open", true)
+                                                    <label>Open</label>
+                                                </div>
+                                                <div class=" col-md-4">
+                                                    @Html.CheckBox("Confirmed", true)
+                                                    <label>Confirmed</label>
+                                                </div>
+                                                <div class=" col-md-4">
+                                                    @Html.CheckBox("Cancelled", true)
+                                                    <label>Cancelled</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            @*<div class="row">
+                                                    <div class="col-md-12">
+                                                        <h4 class="form-section"><i class="la la-usd"></i>Price Range</h4>
+                                                    </div>
+                                                </div>*@
+                                            <div class="row" style="margin-left:1.5rem;margin-top: 0.5rem;">
+                                                <div class="col-md-12">
+
+                                                    <p>
+                                                        <label for="amount">Price range:</label>
+                                                        <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                                                    </p>
+
+                                                    <div class="col-md-6" id="slider-range"></div>
+                                                    @*<fieldset>
+                                                            <label>Info Color Slider</label>
+                                                            <div class="form-group">
+                                                                <div id="info-color-slider" class="square slider-info my-1"></div>
+                                                            </div>
+                                                        </fieldset>*@
+                                                </div>
+                                                @*id="fieldlist">*@
+                                                @*<label>Min</label>*@
+                                                @*@Html.TextBox("MinPrice", null, new { @class = "form-control" })*@
+                                                @*@(Html.Kendo().RangeSlider()
+                                                                                           .Name("rangeslider")
+                                                                                           .Min(0)
+                                                                                           .Max(1000000)
+                                                                                           .SmallStep(1)
+                                                                                           .LargeStep(10)
+                                                                                           .Events(events => events
+                                                                                           .Slide("rangeSliderSlide")
+                                                                                           .Change("rangeSliderChange"))
+                                                                                           .HtmlAttributes(new { @class = "humidity" }))
+                                                    @Html.Kendo().DatePicker().Name("Test")*@
+
+                                                @*<p>
+                                                        <label for="amount">Maximum price:</label>
+                                                        <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                                                    </p>
+                                                    <div id="slider-range-min"></div>*@
+
+                                                @*<div class="create-sliders"></div>*@
+
+                                                @*<div class="col-md-3">
+                                                         <label>Max</label>
+                                                         @Html.TextBox("MaxPrice", null, new { @class = "form-control" })
+                                                    </div>*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            @*<button type="button" class="btn btn-primary" onclick="@Html.AjaxCall("this",Url.Action("QuoteDiscountAnalysisReportPost","Reports",new { area=""}),"POST",pReturnFunction:"function(data){$('#QuoteDiscountAnalysisReportPost').html(data);$('.jsQuoteDiscountAnalysisReportCollapse').trigger('click');}")"><i class="ft ft-search"></i> Search</button>*@
+                                            <button type="button" class="btn btn-primary" onclick="SearchReport(this);"><i class="ft ft-search"></i> Search</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="QuoteDiscountAnalysisReportPost" class="QuoteDiscountAnalysisReportPost">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title"><i class="la la-gratipay"></i>Quote Discount Analysis</h4>
+                            <a class="heading-elements-toggle"><i class="ft-align-justify font-medium-3"></i></a>
+                            <div class="heading-elements">
+                                <ul class="list-inline mb-0">
+                                    <li><a data-action="collapse" class=""><i class="ft-minus"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div id="jsScrollWrapper" style="overflow-x:auto;">
+                                        <div id="jsScroll" style="height:1px;">
+                                        </div>
+                                    </div>
+                                    <div id="QuoteDiscountAnalysisViewModel">
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+    </section>
+    <div id="jsHistory">
+        @(Html.Kendo().Window().Name("Details")
+                                                                                                                                                                                                        .Title("History")
+                                                                                                                                                                                                        .Visible(false)
+                                                                                                                                                                                                        .Modal(false)
+                                                                                                                                                                                                        .Draggable(true)
+                                                                                                                                                                                                        .Width(1200)
+                                                                                                                                                                                                        .Height(480)
+                                                                                                                                                                                                        .Resizable()
+        )
+    </div>
+    <script type="text/x-kendo-template" id="template">
+        <div id="details-container">
+        </div>
+    </script>
+</div>
+<style>
+    /*#fieldlist {
+            list-style: none;*/
+    /*padding-bottom: 2em;*/
+    /*display: block;
+            padding-bottom: 1em;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 12px;
+            color: #444;
+            padding: 0;
+            margin-top: -0.5rem;
+            text-align: center;
+        }
+    */
+    /*fieldset {
+        min-width: 0;
+        padding: 0;
+        margin: 0;
+        border: 0;
+    }
+
+    .my-1 {
+        margin-bottom: 1rem !important;
+    }
+
+    .slider-info.noUi-connect {
+        background: #1e9ff2 !important;
+    }
+
+    .slider-info .noUi-handle {
+        border-color: #1e9ff2 !important;
+    }
+
+    .slider-info.square .noUi-handle {
+        background: #1e9ff2 !important;
+    }*/
+
+    /*.create-sliders {
+        margin: 60px;
+    }
+
+    .noUi-value {
+        cursor: pointer;
+    }*/
+</style>
+@section JSSection
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //$(".jsSelectOne[data-id!='1']").attr('disabled', true);
+            //$(".jsRadioOne").change(function () {
+            //    $(".jsSelectOne").attr('disabled', true);
+            //    $(".jsSelectOne[data-id=" + $(this).val() + "]").removeAttr('disabled');
+            //});
+            $("#DeliveryDate_Min").val($('#DeliveryDate_Values1').data('daterangepicker').startDate.format('DD-MM-YYYY'))
+            $("#DeliveryDate_Max").val($('#DeliveryDate_Values1').data('daterangepicker').endDate.format('DD-MM-YYYY'));
+            Refresh(null);
+            grid = $("#QuoteDiscountAnalysisViewModel").data("kendoGrid");
+            $("#DeliveryDate_Values1").change(function () {
+                $("#DeliveryDate_Min").val($('#DeliveryDate_Values1').data('daterangepicker').startDate.format('DD-MM-YYYY'))
+                $("#DeliveryDate_Max").val($('#DeliveryDate_Values1').data('daterangepicker').endDate.format('DD-MM-YYYY'));
+            });
+
+            //$("#slider-range-max").slider({
+            //    range: "max",
+            //    min: 1,
+            //    max: 10,
+            //    value: 2,
+            //    slide: function (event, ui) {
+            //        $("#amount").val(ui.value);
+            //    }
+            //});
+            //$("#amount").val($("#slider-range-max").slider("value"));
+        });
+        $("#slider-range").slider({
+            range: true,
+            min: 0,
+            max: 10000,
+            values: [300, 5000],
+            //handle: "square",
+            slide: function (event, ui) {
+                $("#amount").val("$" + ui.values[0] + " - $" + ui.values[1]);
+            }
+        });
+        $("#amount").val("$" + $("#slider-range").slider("values", 0) + " - $" + $("#slider-range").slider("values", 1));
+
+           //var infoColorSlider = document.getElementById('info-color-slider');
+
+           // noUiSlider.create(infoColorSlider, {
+           //     start: [35, 65],
+           //     behaviour: 'drag',
+           //     connect: true,
+           //     range: {
+           //         'min': 20,
+           //         'max': 80
+           //     }
+           // });
+        //var sliders = $('.create-sliders');
+        //for (var i = 0; i < sliders.length; i++) {
+
+        //    noUiSlider.create(sliders[i], {
+        //        start: [0],
+        //        range: {
+        //            // start at 0 and end at 1000
+        //            min: 0,
+        //            max: 180
+        //        },
+        //        behaviour: 'snap',
+        //        connect: [true, false],
+        //        //set values that are clickable
+        //        pips: {
+        //            mode: 'values', values: [0, 30, 60, 90, 120, 150, 180]
+        //        },
+        //    });
+        //    sliders[i].noUiSlider.on('slide', addValues);
+
+        //}
+
+        //$('.noUi-value').click(function () {
+        //    var selectedSliderIndex = $(this).parents('.create-sliders').index();
+        //    var value = Number($(this).data('value'));
+        //    sliders[selectedSliderIndex].noUiSlider.set(value);
+        //});
+
+        //function addValues() {
+        //    var allValues = [];
+        //}
+        //function rangeSliderSlide(e) {
+        //    kendoConsole.log("Slide :: new slide values are: " + e.values.toString().replace(",", " - "));
+        //}
+
+        //function rangeSliderChange(e) {
+        //    kendoConsole.log("Change :: new values are: " + e.values.toString().replace(",", " - "));
+        //}
+
+        function SearchReport(elem) {
+            $(".QuoteDiscountAnalysisReportPostCollapse").trigger("click");
+             ClickableLoader(elem, true);
+
+             var groupBy = "";
+             var DateType = $("#DateType").val();
+                var FromDate = $("#FromDate").val();
+                var ToDate = $("#ToDate").val();
+
+                var SelectOne = $("input[name='SelectOne']:checked").val();
+                var Branch = $("#Branch").val();
+                var SalesRep = $("#SalesRep").val();
+                var ProjectLead = $("#ProjectLead").val();
+                var ShowName = $("#ShowName").val();
+                var Sort = $("#SortList").val();
+                var CustName = $("#CustName").val();
+
+                var IncludeNA = $("input[name='IncludeNA']:checked").val();
+                var IncludeBlanks = $("input[name='IncludeBlanks']:checked").val();
+                //var MinPrice = $("#MinPrice").val();
+                //var MaxPrice = $("#MaxPrice").val();
+            var MinPrice = $('#slider-range').slider("values")[0]; // for slider with single knob or lower value of range
+            var MaxPrice = $('#slider-range').slider("values")[1];
+
+
+                var Open = $("input[name='Open']:checked").val();
+                var Confirmed = $("input[name='Confirmed']:checked").val();
+                var Cancelled = $("input[name='Cancelled']:checked").val();
+
+                if (SelectOne == "0") {
+                    groupBy = "Branch";
+                }
+                else if (SelectOne == "1") {
+                    groupBy = "SalesRep";
+                }
+                else if (SelectOne == "2") {
+                    groupBy = "Show";
+                }
+                else if (SelectOne == "3") {
+                    groupBy = "ProjectLead";
+                }
+
+                var Url = "";
+                var strSort = "";
+                Url = Url + "?DateType=" + DateType;
+                Url = Url + "&SelectOne=" + SelectOne;
+
+                    if (Branch == "") {
+                        Url = Url + "&Branch=0";
+                    }
+                    else {
+                        Url = Url + "&Branch=" + Branch;
+                    }
+
+                    if (SalesRep == "") {
+                        Url = Url + "&SalesRep=0";
+                    }
+                    else {
+                        Url = Url + "&SalesRep=" + SalesRep;
+                    }
+
+                    if (ProjectLead == "") {
+                        Url = Url + "&ProjectLead=0";
+                    }
+                    else {
+                        Url = Url + "&ProjectLead=" + ProjectLead;
+                    }
+
+                    if (ShowName == "") {
+                        Url = Url + "&ShowName=0";
+                    }
+                    else {
+                        Url = Url + "&ShowName=" + ShowName;
+                    }
+
+                Url = Url + "&FromDate=" + FromDate + "";
+                Url = Url + "&ToDate=" + ToDate + "";
+
+                if (CustName == "") {
+                    Url = Url + "&CustName=none";
+                }
+                else {
+                    Url = Url + "&CustName=" + CustName;
+                }
+
+                if (MinPrice == "") {
+                    Url = Url + "&MinPrice=none";
+                }
+                else {
+                    Url = Url + "&MinPrice=" + MinPrice;
+                }
+
+                if (MaxPrice == "") {
+                    Url = Url + "&MaxPrice=none";
+                }
+                else {
+                    Url = Url + "&MaxPrice=" + MaxPrice;
+                }
+
+                if (IncludeNA == "true") {
+                    Url = Url + "&IncludeNA=true";
+                } else {
+                    Url = Url + "&IncludeNA=false";
+                }
+
+                if (IncludeBlanks == "true") {
+                    Url = Url + "&IncludeBlanks=true";
+                } else {
+                    Url = Url + "&IncludeBlanks=false";
+                }
+                if (Open == "true") {
+                    Url = Url + "&Open=true";
+                } else {
+                    Url = Url + "&Open=false";
+                }
+                if (Confirmed == "true") {
+                    Url = Url + "&Confirmed=true";
+                } else {
+                    Url = Url + "&Confirmed=false";
+                }
+                if (Cancelled == "true") {
+                    Url = Url + "&Cancelled=true";
+                } else {
+                    Url = Url + "&Cancelled=false";
+                }
+
+
+
+                @*var crudServiceBaseUrl = '@System.Configuration.ConfigurationManager.AppSettings["CommonUrl"]';*@
+                dataSource = new kendo.data.DataSource({
+                    //type: "jsonp",
+                    transport: {
+                        read: {
+                            url:'@Url.Action("QuoteDiscountAnalysisReportPost", "Reports",new { area=""})'  + Url,
+                            dataType: "jsonp",
+                            type: "POST",
+                            data: GetFormData("jsFormQuoteDiscountAnalysisReportPost")
+                        },
+
+                        parameterMap: function (options, operation) {
+                            if (operation !== "read" && options.models) {
+                                return { models: kendo.stringify(options.models) };
+                            }
+                        }
+                    },
+                    batch: true,
+                    //pageSize: 20,
+                    schema: {
+                        model: {
+                            id: "QuoteID",
+                            fields: {
+                                custname: { editable: false, nullable: true },
+                                QuoteID : {},
+                                QuoteType: {},
+                                discountAvg: {type: "number"},
+                                suggestedTotalvalue: {type: "number"},
+                                GroupCompTotal: {type: "number"},
+                                GroupExtraTotal: {type: "number"},
+                                GroupAdjTotal: {type: "number"},
+                                QuoteTotalvalue: {type: "number"},
+                                equipRecovery: { type: "number" }
+                            }
+                        }
+                    },
+                    group: {
+                        field: groupBy, aggregates: [{ field: "discountAvg", aggregate: "sum" },{ field: "discountAvg", aggregate: "count" },
+                                { field: "suggestedTotalvalue", aggregate: "sum" },
+                                { field: "GroupCompTotal", aggregate: "sum" },
+                                { field: "GroupExtraTotal", aggregate: "sum" },
+                                { field: "GroupAdjTotal", aggregate: "sum" },
+                                { field: "QuoteTotalvalue", aggregate: "sum" },
+                                { field: "equipRecovery", aggregate: "sum" }]
+                        },
+                    aggregate: [{ field: "discountAvg", aggregate: "sum" }, { field: "discountAvg", aggregate: "count" },
+                                { field: "suggestedTotalvalue", aggregate: "sum" },
+                                { field: "GroupCompTotal", aggregate: "sum" },
+                                { field: "GroupExtraTotal", aggregate: "sum" },
+                                { field: "GroupAdjTotal", aggregate: "sum" },
+                                { field: "QuoteTotalvalue", aggregate: "sum" },
+                                { field: "equipRecovery", aggregate: "sum" }
+                    ]
+
+                });
+
+             $("#QuoteDiscountAnalysisViewModel").kendoGrid({
+                    dataSource: dataSource,
+                    //toolbar: ["excel"],
+                    sortable: true,
+                    navigatable: true,
+                    groupable: { showFooter: true },
+                    scrollable: {
+                        endless: true
+                    },
+                    columns: [
+                        { field: "custname", title: "CUSTOMER", width: 80 },
+                        { field: "QuoteID", title: "QUOTE ID", width: 80 },
+                        { field: "QuoteType", title: "Status", width: 100 },
+                        { field: "discountAvg", title: "DISCOUNT", width: 70, format: "{0:p}", template: "#=getRedColor(QuoteID,TotalWithoutDisc, Total,discountAvg,'Discount')#", groupFooterTemplate: "#=getDiscount(data.discountAvg.count,data.discountAvg.sum)#" },
+                        { field: "suggestedTotalvalue", title: "EXPECTED RATE", format: "{0:c}", width: 80, template: "#=getRedColor(QuoteID,TotalWithoutDisc, Total,suggestedTotalvalue,'suggestedTotalvalue')#", groupFooterTemplate: "$#= kendo.toString(sum, '0.00') #" },
+                        { field: "GroupCompTotal", title: "COMP", width: 80, format: "{0:c}", template: "#=getRedColor(QuoteID,TotalWithoutDisc, Total,GroupCompTotal,'GroupCompTotal')#", groupFooterTemplate: "$#= kendo.toString(sum, '0.00') #" },
+                        { field: "GroupExtraTotal", title: "EXTRAS", width: 80, format: "{0:c}", template: "#=getRedColor(QuoteID,TotalWithoutDisc, Total,GroupExtraTotal,'GroupExtraTotal')#", groupFooterTemplate: "$#= kendo.toString(sum, '0.00') #" },
+                        { field: "GroupAdjTotal", title: "ADJUSTMENTS", width: 80, format: "{0:c}", template: "#=getRedColor(QuoteID,TotalWithoutDisc, Total,GroupAdjTotal,'GroupAdjTotal')#", groupFooterTemplate: "$#= kendo.toString(sum, '0.00') #" },
+                        { field: "QuoteTotalvalue", title: "EQUIP TOTAL", width: 80, format: "{0:c}", template: "#=getRedColor(QuoteID,TotalWithoutDisc, Total,QuoteTotalvalue,'QuoteTotalvalue')#", groupFooterTemplate: "$#= kendo.toString(sum, '0.00') #" },
+                     { field: "equipRecovery", title: "RECOVERY", width: 80, template: "#=getRedColor(QuoteID,TotalWithoutDisc, Total,equipRecovery,'Recovery')#", groupFooterTemplate: "#=getEquipRecoveryFooter(data.QuoteTotalvalue.sum,data.suggestedTotalvalue.sum,data.GroupCompTotal.sum)#" }],
+                 dataBound: function (e) {
+                     ClickableLoader(elem, false);
+                     var dataElement = $(e.sender.element).find(".k-grid-content");
+                     var fakeScroll = document.getElementById("jsScroll");
+                     fakeScroll.style.width = dataElement.children(0).width() + "px";
+
+                     dataElement.scroll(function () {
+                         $("#jsScrollWrapper").scrollLeft(dataElement.scrollLeft());
+                     });
+                     $("#jsScrollWrapper").scroll(function () {
+                         dataElement.scrollLeft($("#jsScrollWrapper").scrollLeft());
+                     });
+                 }
+
+             }).addClass("alliantKendo");
+
+
+             //});
+
+
+                $("#grid").kendoTooltip({
+                    filter: "td:nth-child(3)", //this filter selects the second column's cells
+                    position: "right",
+                    content: function (e) {
+                        //debugger;
+                        var dataItem = $("#grid").data("kendoGrid").dataItem(e.target.closest("tr"));
+                        var showStart = kendo.toString(kendo.parseDate(dataItem.ShowStart, 'yyyy-MM-dd'), 'MM/dd/yyyy');
+                        var showEnd = kendo.toString(kendo.parseDate(dataItem.ShowEnd, 'yyyy-MM-dd'), 'MM/dd/yyyy');
+                        var content = "<table height='80px' width='250px'><tr><td style='white-space: nowrap;'>Show Start Date  :  </td><td style='white-space: nowrap;'> " + showStart + "</td></tr><tr><td style='white-space: nowrap;'>Show End Date  :  </td><td style='white-space: nowrap;'> " + showEnd + "</td></tr><tr><td style='white-space: nowrap;'>No # of shows  :  </td><td style='white-space: nowrap;'> " + dataItem.NoOfShows + "</td></tr></table>";
+                        return content;
+                    }
+                }).data("kendoTooltip");
+
+
+
+                //function setColors() {
+                //    debugger;
+
+                //}
+
+                //var grid = $("#grid").data("kendoGrid");
+                //var data = grid.dataSource.data();
+                //debugger;
+                //grid.tbody.find('>tr').each(function () {
+                //    var dataItem = grid.dataItem(this);
+                //    if (dataItem.QuoteStatus == "Confirmed") {
+                //        $(this).css('color', 'red');
+                //    }
+                //});
+            }
+
+        function getDiscount(count, sum) {
+
+
+            var total;
+
+
+            total = (sum / count) * 100;
+
+            return total.toFixed(2) + "%";
+        }
+
+        function getEquipRecoveryFooter(quoteTotal, suggestedTotal, GroupCompTotal) {
+
+
+            var total;
+            var sumofsuggestedComp = suggestedTotal + GroupCompTotal;
+
+            if ((suggestedTotal + GroupCompTotal) == 0)
+            {
+                total = 0;
+            }
+            else {
+                total = (quoteTotal / sumofsuggestedComp) * 100;
+            }
+
+
+            return total.toFixed(2) + "%";
+        }
+
+            function Getvalue(Quantity, PurSubQty) {
+                if (Quantity != PurSubQty)
+                    return "<b style='color:red'>" + PurSubQty + "</b>";
+                else
+                    return PurSubQty;
+            }
+
+            function getRedColor(QuoteID, TotalWithoutDisc, Total, value, ColumnName) {
+                var LineTotal = 0;
+                var LineTotalWithoutDisc = 0;
+                var LineAverage = 0;
+                var GroupAverage = 0;
+                var LineNonCompCount = 0;
+                var GroupAverageLineNonCompCount = 0;
+                var returnValue = 0;
+
+                if (Total != null && Total != "0") {
+                    LineTotal = Total;
+                }
+                else {
+                    LineTotal = 0;
+                }
+
+                if (TotalWithoutDisc != null && TotalWithoutDisc != "0") {
+                    LineTotalWithoutDisc = TotalWithoutDisc;
+                }
+                else {
+                    LineTotalWithoutDisc = 0;
+                }
+
+                if (LineTotalWithoutDisc != 0) {
+                    LineAverage = (1 - (LineTotal / LineTotalWithoutDisc)) * 100;
+                }
+                else {
+                    LineAverage = (1 - (LineTotal / 1)) * 100;
+                }
+
+                if (LineTotal != 0) {
+                    GroupAverage = GroupAverage + LineAverage;
+                    LineNonCompCount = LineNonCompCount + 1;
+                }
+
+                if (LineNonCompCount == 0) {
+                    GroupAverageLineNonCompCount = GroupAverage;
+                }
+                else {
+                    GroupAverageLineNonCompCount = GroupAverage / LineNonCompCount;
+                }
+
+                if (GroupAverageLineNonCompCount > 45) {
+                    if (ColumnName == "Discount") {
+                        returnValue = "<b style='color:#FF0000'>" + (value*100).toFixed(2) + "%</b>";
+                    }
+                    else if(ColumnName == "Recovery")
+                    {
+                        returnValue = "<b style='color:#FF0000'>" + value + "%</b>";
+                    }
+                    else {
+                        returnValue = "<b style='color:#FF0000'>$" + value.toFixed(2) + "</b>";
+                    }
+
+                }
+                else {
+                    if (ColumnName == "Discount") {
+                        returnValue = "<b style='color:#656565'>" + (value * 100).toFixed(2) + "%</b>";
+                    }
+                    else if (ColumnName == "Recovery") {
+                        returnValue = "<b style='color:#656565'>" + value + "%</b>";
+                    }
+                    else {
+                        returnValue = "<b style='color:#656565'>$" + value.toFixed(2) + "</b>";
+                    }
+
+                }
+
+                return returnValue;
+            }
+    </script>
+}
+
+
+

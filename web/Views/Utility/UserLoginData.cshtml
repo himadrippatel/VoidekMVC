@@ -1,0 +1,29 @@
+﻿<div class="content-body">
+    <section class="horizontal-grid" id="horizontal-grid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">
+                            <i class="ft-users"></i> Sync User Data for Login
+                        </h4>
+                        <a class="heading-elements-toggle"><i class="ft-align-justify font-medium-3"></i></a>
+                        <div class="heading-elements">
+                            <ul class="list-inline mb-0">
+                                <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        @using (Html.BeginForm())
+                        {
+                            <button type="button" class="btn-primary btn" onclick="@Html.AjaxCall("this",Url.Action("UserLoginDataUpdate","Utility",new { area=""}),"POST")">
+                                <i class="ft-repeat"></i> Sync
+                            </button>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

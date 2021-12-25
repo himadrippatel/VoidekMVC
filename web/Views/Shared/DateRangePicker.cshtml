@@ -1,0 +1,41 @@
+﻿@model AlliantDateRangePickerModel
+@{
+    if (Model.HTMLAttributes?.Count() == 0)
+    {
+        Model.HTMLAttributes = new Dictionary<string, object>();
+    }
+
+    if (Model.DateRanges.Count() == 1 && Model.DateRanges[0].Equals(AlliantDateRanges.All))
+    {
+        Model.DateRanges = Enum.GetValues(typeof(AlliantDateRanges)).Cast<AlliantDateRanges>().Where(x => x != AlliantDateRanges.All).ToList();
+    }
+
+    Model.HTMLAttributes.Add("data-dateranges", Newtonsoft.Json.JsonConvert.SerializeObject(Model.DateRanges));
+    Model.HTMLAttributes.Add("data-autoapply", Model.AutoApply);
+    Model.HTMLAttributes.Add("data-showdropdowns", Model.ShowDropDowns);
+    Model.HTMLAttributes.Add("data-alwaysshowcalendars", Model.AlwaysShowCalendars);
+    Model.HTMLAttributes.Add("data-showweeknumbers", Model.ShowWeekNumbers);
+
+    if (!string.IsNullOrEmpty(Model.StartDate))
+    {
+        Model.HTMLAttributes.Add("data-startdate", Model.StartDate);
+    }
+
+    if (!string.IsNullOrEmpty(Model.EndDate))
+    {
+        Model.HTMLAttributes.Add("data-enddate", Model.EndDate);
+    }
+
+    Model.HTMLAttributes.Add("data-dateformat", Model.DateFormat);
+    Model.HTMLAttributes.Add("data-timepicker", Model.TimePicker);
+    Model.HTMLAttributes.Add("data-Timepickerincrement", Model.TimePickerIncrement);
+    Model.HTMLAttributes.Add("data-TimePicker24Hour", Model.TimePicker24Hour);
+    Model.HTMLAttributes.Add("data-timepickerseconds", Model.TimePickerSeconds);
+
+    if (!string.IsNullOrEmpty(Model.SelectedValue))
+    {
+        Model.HTMLAttributes.Add("data-selectedvalue", Model.SelectedValue);
+    }
+}
+@Html.TextBox(Model.ControlID, Model.SelectedValue, Model.HTMLAttributes)
+

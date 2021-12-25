@@ -1,0 +1,199 @@
+﻿@{
+    ViewBag.Title = "Collapse";
+}
+
+<h2>Collapse</h2>
+
+<h2>Before</h2>
+
+<div id="accordion" role="tablist" aria-multiselectable="true">
+    <div class="card">
+        <div class="card-header" role="tab" id="headingOne">
+            <h5 class="mb-0">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    Collapsible Group Item #1
+                </a>
+                <span class="float-right">Click me</span>
+            </h5>
+        </div>
+
+        <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne">
+            <div class="card-block">
+                1
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header" role="tab" id="headingTwo">
+            <h5 class="mb-0">
+                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    Collapsible Group Item #2
+                </a>
+                <span class="float-right">Click me</span>
+            </h5>
+        </div>
+        <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+            <div class="card-block">
+                2
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header" role="tab" id="headingThree">
+            <h5 class="mb-0">
+                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    Collapsible Group Item #3
+                </a>
+                <span class="float-right">Click me</span>
+            </h5>
+        </div>
+        <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree">
+            <div class="card-block">
+                3
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<h2>After</h2>
+
+
+<div class="collapse-accordion" id="accordion2" role="tablist" aria-multiselectable="true">
+    <div class="card">
+        <div class="card-header" role="tab" id="headingOne1">
+            <h5 class="mb-0">
+                <a data-toggle="collapse" data-parent="#accordion2" href="#collapseOne2" aria-expanded="true" aria-controls="collapseOne">
+                    Collapsible Group Item #1
+                    <span class="float-right">Click me</span>
+
+                </a>
+            </h5>
+        </div>
+
+        <div id="collapseOne2" class="collapse show" role="tabpanel" aria-labelledby="headingOne2">
+            <div class="card-block">
+                1
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header" role="tab" id="headingTwo2">
+            <h5 class="mb-0">
+                <a class="collapsed" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo2" aria-expanded="false" aria-controls="collapseTwo2">
+                    Collapsible Group Item #2
+                    <span class="float-right">Click me</span>
+
+                </a>
+            </h5>
+        </div>
+        <div id="collapseTwo2" class="collapse" role="tabpanel" aria-labelledby="headingTwo2">
+            <div class="card-block">
+                2
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header" role="tab" id="headingThree2">
+            <h5 class="mb-0">
+                <a class="collapsed" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree2" aria-expanded="false" aria-controls="collapseThree2">
+                    Collapsible Group Item #3
+                    <span class="float-right">Click me</span>
+
+                </a>
+            </h5>
+        </div>
+        <div id="collapseThree2" class="collapse" role="tabpanel" aria-labelledby="headingThree2">
+            <div class="card-block">
+                3
+            </div>
+        </div>
+    </div>
+</div>
+
+<h2>tempate collpase</h2>
+<div class="row">
+    <div class="col-xl-4 col-md-6 col-sm-12">
+        <div class="card">
+            <div class="card-content">
+                <div class="card-body">
+                    <h4 class="card-title">Collapse</h4>
+                    <p class="card-text">
+                        Some quick example text to build on the card title and make up the bulk of the card's
+                        content.
+                    </p>
+                </div>
+                <div id="accordionWrap1" role="tablist" aria-multiselectable="true">
+                    <div class="card accordion collapse-icon panel mb-0 box-shadow-0 border-0">
+                        <a id="heading11" role="tab" class="card-header border-bottom-blue-grey border-bottom-lighten-4 info" data-toggle="collapse" href="#accordion11" aria-expanded="true" aria-controls="accordion11">
+                            <div class="h6 blue">Accordion Group Item #1</div>
+                        </a>
+                        <div id="accordion11" role="tabpanel" aria-labelledby="heading11" data-parent="#accordionWrap1" class="collapse show" aria-expanded="true">
+                            <div class="card-body">
+                                <p class="card-text">
+                                    Caramels dessert chocolate cake pastry jujubes bonbon. Jelly wafer jelly beans. Caramels
+                                    chocolate cake liquorice cake wafer jelly beans croissant apple pie.
+                                </p>
+                            </div>
+                        </div>
+                        <a id="heading12" role="tab" class="card-header border-bottom-blue-grey border-bottom-lighten-4 info" data-toggle="collapse" href="#accordion12" aria-expanded="false" aria-controls="accordion12">
+                            <div class="h6 blue collapsed">Accordion Group Item #2</div>
+                        </a>
+                        <div id="accordion12" role="tabpanel" aria-labelledby="heading12" data-parent="#accordionWrap1" class="collapse" aria-expanded="false">
+                            <div class="card-body">
+                                <p class="card-text">
+                                    Sugar plum bear claw oat cake chocolate jelly tiramisu dessert pie. Tiramisu macaroon
+                                    muffin jelly marshmallow cake. Pastry oat cake chupa chups.
+                                </p>
+                            </div>
+                        </div>
+                        <a id="heading13" role="tab" class="card-header border-bottom-blue-grey border-bottom-lighten-4 info" data-toggle="collapse" href="#accordion13" aria-expanded="false" aria-controls="accordion13">
+                            <div class="h6 blue collapsed">Accordion Group Item #3</div>
+                        </a>
+                        <div id="accordion13" role="tabpanel" aria-labelledby="heading13" data-parent="#accordionWrap1" class="collapse" aria-expanded="false">
+                            <div class="card-body">
+                                <p class="card-text">
+                                    Candy cupcake sugar plum oat cake wafer marzipan jujubes lollipop macaroon. Cake dragée
+                                    jujubes donut chocolate bar chocolate cake cupcake chocolate topping.
+                                </p>
+                            </div>
+                        </div>
+                        <a id="heading14" role="tab" class="card-header border-bottom-blue-grey border-bottom-lighten-4 info" data-toggle="collapse" href="#accordion14" aria-expanded="false" aria-controls="accordion14">
+                            <div class="h6 blue collapsed">Accordion Group Item #4</div>
+                        </a>
+                        <div id="accordion14" role="tabpanel" aria-labelledby="heading14" data-parent="#accordionWrap1" class="card-collapse collapse" aria-expanded="false">
+                            <div class="card-body">
+                                <p class="card-text">
+                                    Sesame snaps chocolate lollipop sesame snaps apple pie chocolate cake sweet roll. Dragée
+                                    candy canes carrot cake chupa chups danish cake sugar plum candy.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    @*<style>
+                body {
+                    margin: 2em;
+                }
+
+                h2 {
+                    margin: 1em 0;
+                }
+
+                /*
+        .collapse-accordion a[data-toggle=collapse] {display: block;padding:.75rem 1.25rem;}
+        */
+                .collapse-accordion .card a[data-toggle=collapse] {
+                    display: block;
+                    padding: .75rem 1.25rem;
+                }
+
+                .collapse-accordion .card-header {
+                    padding: 0;
+                }
+    </style>*@

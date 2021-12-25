@@ -1,0 +1,234 @@
+﻿@model Tuple<List<Alliant.Domain.Role>, List<Alliant.Domain.SecondaryActivity>>
+@{
+    ViewBag.Title = "Create Role Permission";
+    IDictionary<string, object> oRequired = Html.GetAlliantValidationAttributes(new List<AlliantValidations>() { AlliantValidations.Required });
+    int index = -1;
+}
+<div class="content-body">
+    <section class="horizontal-grid" id="horizontal-grid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Create Role Permission</h4>
+                        <a class="heading-elements-toggle"><i class="ft-align-justify font-medium-3"></i></a>
+                        <div class="heading-elements">
+                            <ul class="list-inline mb-0">
+                                <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        @using (Html.BeginForm())
+                        {
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <label>Select Role <span class="red">*</span></label>
+                                    @Html.TextBox("jstree_rolesearch", null, new { @class = "form-control", @placeholder = "Type to search role" })
+                                    @*@Html.Partial("SelectDropdown", new AlliantSelectDropDownModel() {
+                                                ControlID= "RoleIDs",
+                                                HTMLAttributes=new Dictionary<string, object>(oRequired) { { "class", "jsRemoteSelectBox form-control" } },
+                                                IsMultiSelect=true,
+                                                MinLength=2,
+                                                Note= "Usage: Enter at least two characters to get role name suggestions. Select a value to continue adding more role.",
+                                                PageResult=10,
+                                                Url= Url.Action("SearchRoleSelect", "Role", new { area = Html.AreaUserManagement() }),
+                                                Placeholder= "Type to search role",
+                                                IsCloseOnSelect=true,
+                                            })
+                                        @Html.AlliantValidationMessage("RoleIDs")*@
+                                </div>
+                                <div class="col-md-12 form-group skin skin-square table-responsive">
+                                    @Html.AlliantValidationMessage("RoleIDs")
+                                    @*<div id="jsTree" class="jsTree" data-three-state="false">
+                                            @DisplayTree(Model.Where(x => x.ParentID == 0), index)
+                                        </div>
+                                        @helper DisplayTree(IEnumerable<Alliant.Domain.ActivityRole.Roles> roles, int index)
+                                        {
+                                            index++;
+                                            <ul>
+                                                @foreach (var role in roles)
+                                                {
+                                                    <li id="role_@role.RoleID" data-id="@role.RoleID" data-parentid="@role.RoleID">
+                                                        <label>
+                                                            @role.Name
+                                                        </label>
+                                                        @{
+                                                            var child_role = Model.Where(e => e.ParentID == role.RoleID);
+                                                            if (child_role.Count() > 0)
+                                                            {
+                                                                @DisplayTree(child_role, index)
+                                                            }
+                                                        }
+                                                    </li>
+                                                }
+                                            </ul>
+                                        }*@
+                                    <div id="jsRoleTree" class="jsTree" data-three-state="false">
+                                        @DisplayRoleTree(Model.Item1.Where(x => x.ParentID == null), index)
+                                    </div>
+                                    @helper DisplayRoleTree(IEnumerable<Alliant.Domain.Role> roles, int index)
+                                    {
+                                        index++;
+                                        <ul>
+                                            @foreach (var role in roles)
+                                            {
+                                                <li id="role_@role.RoleID" data-id="@role.RoleID" data-parentid="@role.RoleID">
+                                                    <label>
+                                                        @role.DefaultName
+                                                    </label>
+                                                    @{
+                                                        var children = Model.Item1.Where(e => e.ParentID == role.RoleID);
+                                                        if (children.Count() > 0)
+                                                        {
+                                                            @DisplayRoleTree(children, index)
+                                                        }
+                                                    }
+                                                </li>
+                                            }
+                                        </ul>
+                                    }
+                                    @Html.Hidden("RoleIDs", null, new Dictionary<string, object>(oRequired) { })
+                                    @Html.Hidden("ParentIDs")
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <label>Select Permission <span class="red">*</span></label>
+                                    @Html.TextBox("jstree_search", null, new { @class = "form-control", @placeholder = "Type to search permission" })
+                                </div>
+                                <div class="col-md-12 form-group skin skin-square table-responsive">
+                                    @Html.AlliantValidationMessage("ActivityIDs")
+                                    <div id="jsTree" class="jsTree" data-three-state="false">
+                                        @DisplayTree(Model.Item2.Where(x => x.PrimaryActivityID == 0), index)
+                                    </div>
+                                    @helper DisplayTree(IEnumerable<Alliant.Domain.SecondaryActivity> secondaryActivitiesroles, int index)
+                                    {
+                                        index++;
+                                        <ul>
+                                            @foreach (var secondary in secondaryActivitiesroles)
+                                            {
+                                                <li id="secondary_@secondary.ActivityID" data-id="@secondary.ActivityID" data-parentid="@secondary.PrimaryActivityID">
+                                                    <label>
+                                                        @*@Html.CheckBox(string.Concat("SecondaryActivityID[", index, Guid.NewGuid(), "]"), false, new { @data_id = secondary.ActivityID, @data_parentid = secondary.PrimaryActivityID, @class = "jsPrimaryActivityCheckBox" })*@
+                                                        @secondary.ActivityName
+                                                    </label>
+                                                    @{
+                                                        var children = Model.Item2.Where(e => e.PrimaryActivityID == secondary.ActivityID);
+                                                        if (children.Count() > 0)
+                                                        {
+                                                            @DisplayTree(children, index)
+                                                        }
+                                                    }
+                                                </li>
+                                            }
+                                        </ul>
+                                    }
+                                    @Html.Hidden("ActivityIDs", null, new Dictionary<string, object>(oRequired) { })
+
+
+
+
+                                    @Html.Hidden("PrimaryActivityIDs")
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <div class="text-left">
+                                    <button type="button" class="btn btn-primary jsCreateRoleVsActivity" onclick="">Save <i class="ft-save position-right"></i></button>
+                                    <button type="button" class="btn btn-danger jsRemoveForm" onclick="RemoveAjaxContainer('RoleVsActivityForm', function () { $('.jsRoleVsActivityCollapse').trigger('click');})">Cancel <i class="la la-times"></i></button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+@section JSSection
+{
+    <script>
+        $(document).ready(function () {
+            $('#jstree_rolesearch').keyup(function () {
+                $('#jsRoleTree').jstree(true).show_all();
+                $('#jsRoleTree').jstree('search', $(this).val());
+            });
+            $('#jstree_search').keyup(function () {
+                $('#jsTree').jstree(true).show_all();
+                $('#jsTree').jstree('search', $(this).val());
+            });
+            $(".jsCreateRoleVsActivity").click(function () {
+                try
+                {
+                    var ParentIDs = [], RoleIDs = [];
+                    var ActivityIDs = [], PrimaryActivityIDs = [];
+                    var selectedRoleNodes = $('#jsRoleTree').jstree("get_selected", true);
+                    $.each(selectedRoleNodes, function () {
+                        var node = this;
+                        var isParent = (node.children.length > 0);
+                        if (isParent) {
+                            RoleIDs.push(node.data.id);
+                            ParentIDs.push(node.data.parentid);
+
+                            for (var i = 0; i < node.children.length; i++) {
+                                RoleIDs = RoleIDs.filter(function (elem) { return elem !== parseInt(node.children[i].split('_')[1]) });
+                            }
+                        }
+                        else {
+                            var childrenHasParent = node.parent.split('_')[1];
+                            if (jQuery.inArray(parseInt(childrenHasParent), RoleIDs) == -1) {
+                                RoleIDs.push(node.data.id);
+                                ParentIDs.push(node.data.parentid);
+                            }
+                        }
+                    });
+
+                    ParentIDs = ParentIDs.filter((v, p) => ParentIDs.indexOf(v) == p);
+                    $("#RoleIDs").val(RoleIDs.join());
+                    $("#ParentIDs").val(ParentIDs.join());
+                    var selectedNodes = $('#jsTree').jstree("get_selected", true);
+                    $.each(selectedNodes, function ()
+                    {
+                        var node = this;
+                        var isParent = (node.children.length > 0);
+                        if (isParent)
+                        {
+                            ActivityIDs.push(node.data.id);
+                            PrimaryActivityIDs.push(node.data.parentid);
+
+                            for (var i = 0; i < node.children.length; i++)
+                            {
+                                ActivityIDs = ActivityIDs.filter(function (elem) { return elem !== parseInt(node.children[i].split('_')[1]) });
+                            }
+                        }
+                        else
+                        {
+                            var childrenHasParent = node.parent.split('_')[1];
+                            if (jQuery.inArray(parseInt(childrenHasParent), ActivityIDs) == -1)
+                            {
+                                ActivityIDs.push(node.data.id);
+                                PrimaryActivityIDs.push(node.data.parentid);
+                            }
+                        }
+                    });
+
+                    PrimaryActivityIDs = PrimaryActivityIDs.filter((v, p) => PrimaryActivityIDs.indexOf(v) == p);
+                    $("#ActivityIDs").val(ActivityIDs.join());
+                    $("#PrimaryActivityIDs").val(PrimaryActivityIDs.join());
+                    AjaxCall(this, '@Url.Action("CreatePost", "RoleVsActivity", new { area = Html.AreaUserManagement() })', "POST", true, undefined, { RoleIDs: RoleIDs, ActivityIDs: $("#ActivityIDs").val(), PrimaryActivityIDs: $("#PrimaryActivityIDs").val()}, undefined, false,
+                        function (data)
+                        {
+                            $('#RoleVsActivityGrid').data('kendoGrid').dataSource.read();
+                            RemoveAjaxContainer('RoleVsActivityForm', function ()
+                            { $('.jsRoleVsActivityCollapse').trigger('click'); });
+                        }
+                    );
+                }
+                catch (e) {
+                    console.log("Error " + e.message);
+                }
+            });
+        });
+    </script>
+}

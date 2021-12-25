@@ -1,0 +1,170 @@
+﻿@model List<Alliant.Domain.Icon>
+@{
+    ViewBag.Title = "ChildMenu Create";
+    IDictionary<string, object> oRequiredActivity = Html.GetAlliantValidationAttributes(new List<AlliantValidations>()
+{ AlliantValidations.Required,AlliantValidations.RegularExpression }, new AlliantValidationAdditionalValue() { RegularExpression_CompareExpression = AlliantRegularExpresion.SmallChar_UnderScore });
+
+    IDictionary<string, object> oRequired = Html.GetAlliantValidationAttributes(new List<AlliantValidations>()
+{ AlliantValidations.Required });
+}
+<div class="content-body">
+    <section class="horizontal-grid" id="horizontal-grid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Create Child Menus</h4>
+                        <a class="heading-elements-toggle"><i class="ft-align-justify font-medium-3"></i></a>
+                        <div class="heading-elements">
+                            <ul class="list-inline mb-0">
+                                <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        @using (Html.BeginForm())
+                        {
+                            <div class="row">
+                                <div class="col-md-3 form-group">
+                                    <label for="AreaID">Area Name</label>
+                                    @Html.Action("AreaManagementDropDwon", "AreaManagement",
+                                    new
+                                    {
+                                        area = Html.AreaUserManagement(),
+                                        oDropDownDataModel = new AlliantDropDownDataModel()
+                                        {
+                                            ConfigurationOptions = new DropDownConfigurations()
+                                            {
+                                                FirstItemDisplayText="Select",
+                                                ControlID = "AreaID",
+                                                HTMLAttributes = new Dictionary<string, object>()
+                                                {
+                                                    { "class", "form-control" },
+                                                    { "onchange", Html.DropDownData("this", Url.Action("MenuJsonDropDown", "Menu"), "MenuID" ) }
+                                                }
+                                            }
+                                        }
+                                    })
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label for="MenuID">Menu Name</label>
+                                    @Html.AlliantPartial("DropDown",
+                                    new AlliantDropDownDataModel
+                                    {
+                                        Model = new List<string>(),
+                                        ConfigurationOptions = new DropDownConfigurations()
+                                        {
+                                            FirstItemDisplayText = "Select",
+                                            ControlID = "MenuID",
+                                            HTMLAttributes = new Dictionary<string, object>() { { "class", "form-control" }}
+                                        }
+                                    })
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label for="LinkText">Child Menu Text <span class="red">*</span></label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <button type="button" class="btn btn-primary jsSelectedIcon">
+                                                Select Icon
+                                            </button>
+                                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <span class="sr-only">Toggle Dropdown</span>
+                                            </button>
+                                            <ul class="dropdown-menu UlAuto" id="jsIconSelection">
+                                                <li class="dropdown-item jsNotInclude">
+                                                    @Html.TextBox("SearchIcon", null, new { @class = "form-control jsLiSearchFilter", @data_target_ul = "jsIconSelection", @placeholder = "Type to search icon" })
+                                                </li>
+                                                @{
+                                                    foreach (var icon in Model)
+                                                    {
+                                                        <li class="dropdown-item jsDropdownIcon">@Html.Raw(icon.ICon) @icon.IconName</li>
+                                                    }
+                                                }
+                                            </ul>
+                                        </div>
+                                        @Html.Hidden("LinkIcon", "<i class=\"ft ft-align-justify\"></i>")
+                                        @Html.TextBox("LinkText", null, new Dictionary<string, object>(oRequired) { { "class", "form-control" } })
+
+                                    </div>
+                                    @Html.AlliantValidationMessage("LinkText")
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label for="ControllerName">Controller Name<span class="red">*</span></label>
+                                    @*@Html.TextBox("ControllerName", null, new { @class = "form-control" })*@
+                                    @Html.TextBox("ControllerName", null, new Dictionary<string, object>(oRequired) { { "class", "form-control" } })
+                                    @Html.AlliantValidationMessage("ControllerName")
+
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label for="ActionName">Action Name<span class="red">*</span></label>
+                                    @Html.TextBox("ActionName", null, new Dictionary<string, object>(oRequired) { { "class", "form-control" } })
+                                    @Html.AlliantValidationMessage("ActionName")
+
+                                    @*@Html.TextBox("ActionName", null, new { @class = "form-control" })*@
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <label for="ActivityName_AutoComplete">ActivityName <span class="red">*</span></label>
+                                    @Html.Partial("AutoComplete",new AlliantAutoCompleteModel() {
+                                   ControlID = "ActivityName",
+                                   HTMLAttributes= new Dictionary<string, object>(oRequiredActivity) { { "class", "jsAutoComplete form-control" } },
+                                   IsCacheData=true,
+                                   IsMultiSelect=false,
+                                   MinLength=3,
+                                   Placeholder= "Type to search activity_name",
+                                   Url = Url.Action("Suggestion", "PrimaryActivity", new { area=Html.AreaUserManagement()}),
+                                   Note = "Usage: Enter three small letter with underscore like e.g activity_name.",
+                                   SelectValue= "value"
+                               })
+                                    @Html.AlliantValidationMessage("ActivityName_AutoComplete")
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <label for="Description">Description</label>
+                                    @Html.TextArea("Description", null, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <label for="HtmlAttributes">Html Attributes</label>
+                                    @Html.TextArea("HtmlAttributes", null, new { @class = "form-control", @placeholder = "new{class=\"your class\"}" })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <label for="RouteData">Route Data</label>
+                                    @Html.TextArea("RouteData", null, new { @class = "form-control", @placeholder = "new{area=\"area name\",custom_route=\"your value\"}" })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label for="IsActive">IsActive @Html.CheckBox("IsActive", true)</label>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <div class="text-left">
+                                    <button type="button" class="btn btn-primary" onclick="@Html.AjaxCall("this",Url.Action("CreatePost","ChildMenu",new { area=Html.AreaUserManagement()}),"POST",pReturnFunction:"function(data){$('#ChildMenuGrid').data('kendoGrid').dataSource.read();$('#ChildMenuForm').html('');}")">Save <i class="ft-save position-right"></i></button>
+                                    <button type="button" class="btn btn-danger jsRemoveForm" onclick="$('#ChildMenuForm', function () { $('.jsChildMenuCollapse').trigger('click'); }).html('');">Cancel <i class="la la-times"></i></button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+@section JSSection
+{
+    <script type="text/javascript">
+        $(".jsDropdownIcon").click(function () {
+            $(".jsSelectedIcon").html($(this).find('i')[0].outerHTML);
+            $("#LinkIcon").val($(this).find('i')[0].outerHTML);
+        });
+    </script>
+}
+

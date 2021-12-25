@@ -1,0 +1,206 @@
+﻿
+@{
+    ViewBag.Title = "KendoGridDemo";
+}
+
+<h2>KendoGridDemo</h2>
+<script src="https://demos.telerik.com/kendo-ui/content/shared/js/people.js"></script>
+<h4> Random Data</h4>
+<div id="RandomDataGrid"></div>
+<h4 style="margin-top: 1rem;"> Northwind Data</h4>
+<div id="NorthWindDataGrid"></div>
+<script>
+    $(document).ready(function () {
+        $("#RandomDataGrid").kendoGrid({
+            dataSource: {
+                data: createRandomData(50),
+                schema: {
+                    model: {
+                        fields: {
+                            City: { type: "string" },
+                            Title: { type: "string" },
+                            BirthDate: { type: "date" }
+                        }
+                    }
+                },
+                pageSize: 10
+            },
+            //height: 550,
+            groupable: true,
+            scrollable: true,
+            filterable: {
+                mode: "row",
+            },
+            pageable: true,
+            columns: [
+                {
+                    field: "FirstName",
+                    title: "Name",
+                    filterable: false,
+                    //template: "#=FirstName# #=LastName#"
+                },
+                {
+                    field: "City",
+                    filterable: {
+                        cell: {
+                            operator: "eq",
+                            showOperators: false,
+                            template: cityFilter
+                        }
+                    }
+                },
+                {
+                    field: "Title",
+                    filterable: {
+                        cell: {
+                            operator: "eq",
+                            showOperators: false,
+                            template: titleFilter
+                        }
+                    }
+                }
+            ]
+        });
+        $("#RandomDataGrid").css({ height: "auto" });
+        var dataSource = new kendo.data.DataSource({
+            data: [
+                { name: "Tea", category: "Beverages", price: 1 },
+                { name: "Coffee", category: "Beverages", price: 2 },
+                { name: "Ham", category: "Food", price: 3 },
+            ],.l;8776yt
+            group: {
+                field: "category",
+                aggregates: [
+                    { field: "price", aggregate: "max" },
+                    { field: "price", aggregate: "min" }
+                ]
+            }
+        });
+        $("#NorthWindDataGrid").kendoGrid({
+            dataSource: dataSource,
+            //dataSource: {
+            //    type: "odata",
+            //    transport: {
+            //        read: "https://demos.telerik.com/kendo-ui/service/Northwind.svc/Customers"
+            //    },
+            //    pageSize: 15
+            //},
+            //height: 550,
+            groupable: true,
+            sortable: true,
+            pageable: {
+                refresh: true,
+                pageSizes: true,
+                buttonCount: 5
+            },
+            columns: [{ field: "name" },
+                { field: "category" },
+                {
+                    field: "price"
+            //    template: "<div class='customer-photo'" +
+            //        "style='background-image: url(../content/web/Customers/#:data.CustomerID#.jpg);'></div>" +
+            //        "<div class='customer-name'>#: ContactName #</div>",
+            //    field: "ContactName",
+            //    title: "Contact Name",
+            //    width: 240
+            //}, {
+            //    field: "ContactTitle",
+            //    title: "Contact Title"assazsazxdsesdsdsdsdfghjk'lklkiikjjmjbnnjm bnnn hnhnbbbbnn vc cxzzxc vb?.zzdsxzzzzzzc  x x cvc fvcgbv vb vghbgvcxzzxcvhjkl;'\
+
+            //}, {
+            //    field: "CompanyName",
+            //    title: "Company Name"
+            //}, {
+            //    field: "Country",
+            //    width: 150
+                
+            }]
+        });
+        $("#NorthWindDataGrid").css({ height: "auto" });
+        dataSource.fetch(function () {
+            var view = dataSource.view();
+            var beverages = view[0];
+            console.log(beverages.aggregates.price.max); // displays "2"
+            console.log(beverages.aggregates.price.min); // displays "1"
+            var food = view[1];
+            console.log(food.aggregates.price.max); // displays "3"
+            console.log(food.aggregates.price.min); // displays "3"
+        });
+    })
+   
+    var randomDataGrid = $("#RandomDataGrid").data("kendoGrid");
+    function titleFilter(args) {
+        args.element.kendoAutoComplete({
+            dataSource: titles
+        });
+    }
+
+    function cityFilter(args) {
+        args.element.kendoDropDownList({
+            dataSource: cities,
+            optionLabel: "--Select Value--"
+        });
+    }
+
+</script>
+<style type="text/css">
+    .customer-photo {
+        display: inline-block;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background-size: 32px 35px;
+        background-position: center center;
+        vertical-align: middle;
+        line-height: 32px;
+        box-shadow: inset 0 0 1px #999, inset 0 0 10px rgba(0,0,0,.2);
+        margin-left: 5px;
+    }
+
+    .customer-name {
+        display: inline-block;
+        vertical-align: middle;
+        line-height: 32px;
+        padding-left: 3px;
+    }
+</style>
+@*<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Kendo UI Snippet</title>
+
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2020.2.513/styles/kendo.default-v2.min.css" />
+
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2020.2.513/js/kendo.all.min.js"></script>
+</head>
+<body>*@
+
+    <script>
+        var dataSource = new kendo.data.DataSource({
+            data: [
+                { name: "Tea", category: "Beverages", price: 1 },
+                { name: "Coffee", category: "Beverages", price: 2 },
+                { name: "Ham", category: "Food", price: 3 },
+            ],
+            group: {
+                field: "category",
+                aggregates: [
+                    { field: "price", aggregate: "max" },
+                    { field: "price", aggregate: "min" }
+                ]
+            }
+        });
+        dataSource.fetch(function () {
+            var view = dataSource.view();
+            var beverages = view[0];
+            console.log(beverages.aggregates.price.max); // displays "2"
+            console.log(beverages.aggregates.price.min); // displays "1"
+            var food = view[1];
+            console.log(food.aggregates.price.max); // displays "3"
+            console.log(food.aggregates.price.min); // displays "3"
+        });
+    </script>
+@*</body>
+</html>*@

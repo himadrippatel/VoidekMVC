@@ -1,0 +1,260 @@
+﻿@{
+    ViewBag.Title = "ChartDemo";
+}
+
+<h2>ChartDemo</h2>
+
+
+<!doctype html>
+<html>
+
+<head>
+    <title>Combo Bar-Line Chart</title>
+    <script src="https://www.chartjs.org/dist/2.9.3/Chart.min.js"></script>
+    <script src="https://www.chartjs.org/samples/latest/utils.js"></script>
+    <style>
+        canvas {
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="row">
+        <div class="col-12">
+            <div class="card mr-top-5">
+                <div class="card-header">
+                    <h4 class="card-title">Combo Bar Line Chart</h4>
+                    <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
+                    <div class="heading-elements">
+                        <ul class="list-inline mb-0">
+                            <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                            <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
+                            <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+                            <li><a data-action="close"><i class="ft-x"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-content collapse show">
+                    <div class="card-body">
+                        <div style="width: 75%">
+                            <h3></h3>
+                            <canvas id="canvas"></canvas>
+                        </div>
+                        <button id="randomizeData">Randomize Data</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+
+        var chartData1 = {
+            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+            datasets: [{
+                type: 'line',
+                label: 'Dataset 1',
+                borderColor: window.chartColors.blue,
+                borderWidth: 2,
+                fill: false,
+                data: [
+                    randomScalingFactor(),
+                    randomScalingFactor(),
+                    randomScalingFactor(),
+                    randomScalingFactor(),
+                    randomScalingFactor(),
+                    randomScalingFactor(),
+                    randomScalingFactor()
+                ]
+            }, {
+                type: 'bar',
+                label: 'Dataset 2',
+                backgroundColor: window.chartColors.red,
+                data: [
+
+                    randomScalingFactor(),
+                    randomScalingFactor(),
+                    randomScalingFactor(),
+                    randomScalingFactor(),
+                    randomScalingFactor(),
+                    randomScalingFactor(),
+                    randomScalingFactor()
+                ],
+                borderColor: 'white',
+                borderWidth: 2
+            }, {
+                type: 'bar',
+                label: 'Dataset 3',
+                backgroundColor: window.chartColors.green,
+                data: [
+                    randomScalingFactor(),
+                    randomScalingFactor(),
+                    randomScalingFactor(),
+                    randomScalingFactor(),
+                    randomScalingFactor(),
+                    randomScalingFactor(),
+                    randomScalingFactor()
+                ]
+            }]
+
+        };
+        window.onload = function () {
+            var ctx = document.getElementById('canvas');
+            window.myMixedChart = new Chart(ctx, {
+                type: 'bar',
+                data: chartData1,
+                options: {
+                    responsive: true,
+                    title: {
+                        display: true,
+                        text: 'Chart.js Combo Bar Line Chart'
+                    },
+                    tooltips: {
+                        mode: 'index',
+                        intersect: false
+                    }
+                }
+            });
+        };
+
+        document.getElementById('randomizeData').addEventListener('click', function () {
+            chartData1.datasets.forEach(function (dataset) {
+                dataset.data = dataset.data.map(function () {
+                    return randomScalingFactor();
+                });
+            });
+            window.myMixedChart.update();
+        });
+    </script>
+</body>
+
+</html>
+<!-- Combo Bar Line Data Label Chart -->
+<div class="row">
+    <div class="col-12">
+        <div class="card mr-top-5">
+            <div class="card-header">
+                <h4 class="card-title">Combo Bar Line Data Label Chart</h4>
+                <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
+                <div class="heading-elements">
+                    <ul class="list-inline mb-0">
+                        <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                        <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
+                        <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+                        <li><a data-action="close"><i class="ft-x"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-content collapse show">
+                <div class="card-body chartjs">
+                    <canvas id="combo-bar-line-data-label" height="400"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(window).on("load", function () {
+
+        //Get the context of the Chart canvas element we want to select
+        var ctx = $("#combo-bar-line-data-label");
+
+        // Chart Options
+        var chartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                xAxes: [{
+                    stacked: false,
+                    display: true,
+                    gridLines: {
+                        color: "#f3f3f3",
+                        drawTicks: false,
+                    },
+                    scaleLabel: {
+                        display: true,
+                        // labelString: 'Month'
+                    }
+                }],
+                yAxes: [{
+                    stacked: false,
+                    display: true,
+                    gridLines: {
+                        color: "#f3f3f3",
+                        drawTicks: false,
+                    },
+                    scaleLabel: {
+                        display: true,
+                        // labelString: 'Value'
+                    }
+                }]
+            },
+            title: {
+                display: false,
+                text: 'Chart.js Combo Bar Line data label Chart'
+            },
+            animation: {
+                onComplete: function () {
+                    var chartInstance = this.chart;
+                    var ctx = chartInstance.ctx;
+                    ctx.textAlign = "center";
+
+                    Chart.helpers.each(this.data.datasets.forEach(function (dataset, i) {
+                        var meta = chartInstance.controller.getDatasetMeta(i);
+                        Chart.helpers.each(meta.data.forEach(function (bar, index) {
+                            ctx.fillText(dataset.data[index], bar._model.x, bar._model.y - 10);
+                        }), this);
+                    }), this);
+                }
+            }
+        };
+
+        // Chart Data
+        var chartData = {
+            labels: ["January", "February", "March", "April", "May", "June", "July"],
+            datasets: [{
+                type: 'line',
+                label: "My Second dataset",
+                data: [28, 48, 40, 19, 86, 27, 90],
+                backgroundColor: "rgba(250,142,117,.5)",
+                borderColor: "transparent",
+                borderWidth: 2,
+                pointBorderColor: "#FA8E75",
+                pointBackgroundColor: "#FFF",
+                pointBorderWidth: 2,
+                pointHoverBorderWidth: 2,
+                pointRadius: 4,
+            }, {
+                type: 'bar',
+                label: "My First dataset",
+                data: [65, 59, 80, 81, 56, 55, 40],
+                backgroundColor: "#00A5A8",
+                borderColor: "transparent",
+                borderWidth: 2
+            }, {
+                type: 'bar',
+                label: "My Third dataset - No bezier",
+                data: [45, 25, 16, 36, 67, 18, 76],
+                backgroundColor: "#F25E75",
+                borderColor: "transparent",
+                borderWidth: 2
+            }]
+        };
+
+        var config = {
+            type: 'bar',
+
+            // Chart Options
+            options: chartOptions,
+
+            data: chartData
+        };
+
+        // Create the chart
+        var lineChart = new Chart(ctx, config);
+
+    });
+</script>

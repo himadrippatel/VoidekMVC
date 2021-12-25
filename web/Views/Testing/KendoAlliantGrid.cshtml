@@ -1,0 +1,74 @@
+﻿
+@{
+    ViewBag.Title = "KendoAlliantGrid";
+}
+
+<h2>KendoAlliantGrid</h2>
+<script src="https://demos.telerik.com/kendo-ui/content/shared/js/people.js"></script>
+<div id="grid"></div>
+
+<script>
+    $(document).ready(function () {
+        $("#grid").kendoAlliantGrid({
+            dataSource: {
+                data: createRandomData(50),
+                //type: "odata",
+                //transport: {
+                //    read: "https://demos.telerik.com/kendo-ui/service/Northwind.svc/Customers"
+                //},
+                pageSize: 20
+            },
+            height: 550,
+            groupable: true,
+            scrollable: true,
+            filterable: {
+                mode: "row",
+            },
+            pageable: true,
+            columns: [{
+                title: "Name",
+
+                filterable: false,
+                template: "#=FirstName# #=LastName#"
+            },
+            {
+                field: "City",
+                width: 250,
+                filterable: {
+                    cell: {
+                        operator: "eq",
+                        showOperators: false,
+                        // template: cityFilter
+                    }
+                }
+            },
+            {
+                field: "Title",
+                width: 300,
+                filterable: {
+                    cell: {
+                        operator: "eq",
+                        showOperators: false,
+                        //template: titleFilter
+                    }
+                }
+            }]
+        });
+        var grid = $("#grid").data("kendoAlliantGrid");
+    });
+
+        function titleFilter(args) {
+            args.element.kendoAutoComplete({
+                dataSource: titles
+            });
+        }
+
+        function cityFilter(args) {
+            args.element.kendoDropDownList({
+                dataSource: cities,
+                optionLabel: "--Select Value--"
+            });
+        }
+
+</script>
+

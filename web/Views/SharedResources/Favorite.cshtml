@@ -1,0 +1,28 @@
+﻿@model Alliant.Domain.FavoriteMenu
+@using (Html.BeginForm())
+{
+    IDictionary<string,object> oRequired = Html.GetAlliantValidationAttributes(new List<AlliantValidations>() { AlliantValidations.Required });
+    <div class="row">
+        <div class="col-md-12 form-group">
+            <label for="LinkText">Link Name</label>
+            @Html.TextBox("LinkText", Model.LinkText,new Dictionary<string, object>(oRequired) { { "class","form-control"} })
+            @Html.AlliantValidationMessage("LinkText")
+            @Html.Hidden("MenuID", Model.MenuID)
+            @Html.Hidden("SubMenuID", Model.SubMenuID)
+            @Html.Hidden("LinkHref", Model.LinkHref)
+            @Html.Hidden("IsFavorite", Model.IsFavorite)
+        </div>
+        @*<div class="col-md-12 form-group">
+            <p>
+                <code>
+                    @Html.Raw(string.Concat(Request.Url.AbsoluteUri,Model.LinkHref))
+                </code>
+            </p>
+        </div>*@
+        <div class="col-md-12">
+            <button class="btn btn-primary" type="button" onclick="@Html.AjaxCall("this",Url.Action("FavoritePost","SharedResources",new { area=string.Empty}),"POST",pReturnFunction:"function(){Reload();}")">
+                <i class="ft ft-link"></i> Save Favorite
+            </button>
+        </div>
+    </div>
+}    

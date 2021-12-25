@@ -1,0 +1,87 @@
+﻿@model UIContainer<Alliant.Domain.ActivityVsUser>
+@{
+    ViewBag.Title = "User Permissions";
+    bool isDelete = Model.dtUserActivities["activity_usermanagement_activityvsuser_delete"];
+}
+<div class="content-body">
+    <section class="horizontal-grid" id="horizontal-grid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">
+                            Search User Permissions
+                            @if (Model.dtUserActivities["activity_usermanagement_activityvsuser_insert"])
+                            {
+                            <a href="@Url.Action("Create","ActivityVsUser",new { @area=Html.AreaUserManagement()})"
+                               onclick="return ajaxAnchorClick(this, function () { $('.jsActivityVsUserCollapse').trigger('click'); })" data-ajaxdivid="ActivityVsUserForm">
+                                <i class="la la-plus"></i> Create User Permission
+                            </a>
+                            }
+                        </h4>
+                        <a class="heading-elements-toggle"><i class="ft-align-justify font-medium-3"></i></a>
+                        <div class="heading-elements">
+                            <ul class="list-inline mb-0">
+                                <li><a data-action="collapse" class="jsActivityVsUserCollapse"><i class="ft-minus"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        @using (Html.BeginForm())
+                        {
+                            if (Model.dtUserActivities["activity_usermanagement_activityvsuser_search"])
+                            {
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="table-responsive">
+                                        @(Html.Kendo().Grid<Alliant.Domain.ActivityVsUser>()
+                                                                                .Name("ActivityVsUserGrid")
+                                                                                .NoRecords("No record found.")
+                                                                                .Columns(columns =>
+                                                                                {
+                                                                                columns.Template(@<text></text>)
+.HeaderTemplate("Action").Visible(isDelete)
+//.ClientTemplate("<a href='" + Url.Action("DeletePost", "ActivityVsUser", new { area = Html.AreaUserManagement() }) + "/#=UserActivityID#' onclick='return ajaxSweetAlert(this)'><i class='la la-remove'></i></a>");
+.ClientTemplate(isDelete ? "<a href='" + Url.Action("DeletePost", "ActivityVsUser", new { area = Html.AreaUserManagement() }) + "/#=UserActivityID#' onclick='return ajaxSweetAlert(this)'><i class='la la-remove'></i></a>" : "");
+                                        columns.Bound(c => c.ActivityName).HeaderTemplate("Permission");
+                                        columns.Bound(c => c.CustomerName);
+                                        columns.Bound(c => c.IsActive);
+                                        columns.Bound(c => c.CreatedOn).Format("{0:dd-MM-yyyy hh:mm:ss}");
+                                        })
+                                         .Pageable(p =>
+                                   {
+                                       p.PreviousNext(false);
+                                       p.Numeric(false);
+                                   })
+                                        .Filterable()
+                                        .Scrollable(sc => sc.Endless(true))
+                                        .Scrollable(s => s.Height(550))
+                                        .Sortable()
+                                        .DataSource
+                                        (dataSource => dataSource
+                                        .Ajax()
+                                        .PageSize(Constant.KendoDefaultPageSize)
+                                        .Read(read => read.Action("GetActivityVsUserBySearch", "ActivityVsUser", new { area = Html.AreaUserManagement() }))
+                                        .ServerOperation(true)
+                                        .Model(ActivityVsUser => ActivityVsUser.Id(x => x.UserActivityID))
+                                        )
+                                        )
+
+                                    </div>
+                                </div>
+                            </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="ActivityVsUserForm" class="ActivityVsUserForm">
+
+        </div>
+    </section>
+</div>
+@section JSSection
+{
+
+}
